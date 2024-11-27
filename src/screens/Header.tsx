@@ -63,7 +63,7 @@ export function Header() {
                 href="/dashboard"
                 className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
               >
-                Dashboards
+                D
               </a>
               <a
                 href="/Social"
@@ -96,10 +96,10 @@ export function Header() {
                 Metas
               </a>
               <a
-                href="/Dashboards"
+                href="/D"
                 className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
               >
-                Dashboards
+                D
               </a>
               <a
                 href="/blog"

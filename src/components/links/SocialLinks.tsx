@@ -49,7 +49,8 @@ export function SocialLinks() {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 social-links-container">
+    
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 social-links-container" id="socialLinks">
       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Redes Sociais</h3>
       <div className="grid gap-4">
         {links.map((link, index) => (
