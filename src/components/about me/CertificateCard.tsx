@@ -10,7 +10,6 @@ interface CertificateProps {
 }
 
 export function CertificateCard({ title, date, issuer, progress }: CertificateProps) {
-  // Inicializa o ScrollReveal
   useEffect(() => {
     ScrollReveal().reveal('.certificate-card', {
       distance: '50px',

@@ -10,22 +10,22 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: "Network Intrusion Detection System",
-    description: "Developed a real-time network monitoring system using Python and Machine Learning algorithms to detect and prevent security threats.",
+    title: "Sistema de Detecção de Intrusão na Rede",
+    description: "Desenvolvi um sistema de monitoramento de rede em tempo real usando Python e algoritmos de aprendizado de máquina para detectar e prevenir ameaças de segurança.",
     icon: <Shield className="w-6 h-6 text-indigo-600" />,
-    tags: ["Python", "ML", "Cybersecurity"]
+    tags: ["Python", "ML", "Cibersegurança"]
   },
   {
-    title: "Secure Web Application Framework",
-    description: "Built a secure web application framework with built-in protection against common vulnerabilities like XSS and CSRF.",
+    title: "Framework Seguro para Aplicações Web",
+    description: "Construí um framework seguro para aplicações web com proteção integrada contra vulnerabilidades comuns, como XSS e CSRF.",
     icon: <Globe className="w-6 h-6 text-green-600" />,
-    tags: ["TypeScript", "React", "Security"]
+    tags: ["TypeScript", "React", "Segurança"]
   },
   {
-    title: "Encrypted Database System",
-    description: "Implemented an encrypted database system with end-to-end encryption for sensitive data storage.",
+    title: "Sistema de Banco de Dados Criptografado",
+    description: "Implementei um sistema de banco de dados criptografado com criptografia de ponta a ponta para armazenamento de dados sensíveis.",
     icon: <Server className="w-6 h-6 text-blue-600" />,
-    tags: ["Cryptography", "Database", "Security"]
+    tags: ["Criptografia", "Banco de Dados", "Segurança"]
   }
 ];
 

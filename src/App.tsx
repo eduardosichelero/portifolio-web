@@ -111,43 +111,44 @@ function App() {
         <WorkExperienceSection />
 
       {/* Stats Overview */}
-      <div className="overflow-auto max-h-[300px]">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Meus Objetivos</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">8</p>
-              </div>
-              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
-                <Target className="w-6 h-6 text-blue-600" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Completos</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">12</p>
-              </div>
-              <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center">
-                <Trophy className="w-6 h-6 text-green-600" />
-              </div>
-            </div>
-          </div>
-          <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-gray-600 dark:text-gray-300">Como estou indo</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">85%</p>
-              </div>
-              <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center">
-                <CheckCircle2 className="w-6 h-6 text-purple-600" />
-              </div>
-            </div>
-          </div>
+      <div>
+  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-gray-600 dark:text-gray-300">Meus Objetivos</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">8</p>
+        </div>
+        <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">
+          <Target className="w-6 h-6 text-blue-600" />
         </div>
       </div>
+    </div>
+    <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-gray-600 dark:text-gray-300">Completos</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">12</p>
+        </div>
+        <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center">
+          <Trophy className="w-6 h-6 text-green-600" />
+        </div>
+      </div>
+    </div>
+    <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm text-gray-600 dark:text-gray-300">Como estou indo</p>
+          <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">85%</p>
+        </div>
+        <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center">
+          <CheckCircle2 className="w-6 h-6 text-purple-600" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
         {/* Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

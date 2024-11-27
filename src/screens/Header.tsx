@@ -47,30 +47,31 @@ export function Header() {
 
             {/* Navegação para Desktop */}
             <nav className="hidden sm:flex items-center space-x-6">
-              <a
-                href="/"
-                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
-              >
-                Início
-              </a>
-              <a
-                href="/dashboard"
-                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
-              >
-                Dashboard
-              </a>
-              <a
-                href="/blog"
-                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
-              >
-                Blog
-              </a>
-              <a
+            <a
                 href="/about"
                 className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
               >
                 Sobre
               </a>
+              <a
+                href="/"
+                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
+              >
+                Metas
+              </a>
+              <a
+                href="/dashboard"
+                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
+              >
+                Dashboards
+              </a>
+              <a
+                href="/Social"
+                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
+              >
+                Social
+              </a>
+
 
               {/* Botão de Alternância de Tema (Desktop) */}
               <DarkModeToggle />
@@ -82,30 +83,31 @@ export function Header() {
         {isMenuOpen && (
           <div className="sm:hidden bg-white shadow-md dark:bg-gray-800">
             <nav className="flex flex-col space-y-2 p-4">
-              <a
-                href="/"
-                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
-              >
-                Início
-              </a>
-              <a
-                href="/dashboard"
-                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
-              >
-                Dashboard
-              </a>
-              <a
-                href="/blog"
-                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
-              >
-                Blog
-              </a>
-              <a
+            <a
                 href="/about"
                 className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
               >
                 Sobre
               </a>
+              <a
+                href="/"
+                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
+              >
+                Metas
+              </a>
+              <a
+                href="/Dashboards"
+                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
+              >
+                Dashboards
+              </a>
+              <a
+                href="/blog"
+                className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
+              >
+                Social
+              </a>
+
 
               {/* Botão de Alternância de Tema (Mobile) */}
               <DarkModeToggle />

@@ -11,17 +11,17 @@ interface Publication {
 
 const publications: Publication[] = [
   {
-    title: "Modern Approaches to Zero-Trust Architecture",
-    journal: "Journal of Cybersecurity Research",
-    date: "March 2024",
-    description: "An analysis of zero-trust architecture implementation in enterprise environments.",
+    title: "Abordagens Modernas para Arquitetura Zero-Trust",
+    journal: "Revista de Pesquisa em Cibersegurança",
+    date: "Março de 2024",
+    description: "Uma análise da implementação de arquitetura zero-trust em ambientes corporativos.",
     link: "#"
   },
   {
-    title: "Machine Learning in Threat Detection",
-    journal: "International Security Conference",
-    date: "January 2024",
-    description: "Research paper on applying ML algorithms to detect emerging security threats.",
+    title: "Aprendizado de Máquina na Detecção de Ameaças",
+    journal: "Conferência Internacional de Segurança",
+    date: "Janeiro de 2024",
+    description: "Artigo de pesquisa sobre a aplicação de algoritmos de aprendizado de máquina para detectar ameaças emergentes.",
     link: "#"
   }
 ];
@@ -41,10 +41,10 @@ export function PublicationsContent() {
               <p className="mt-1 text-gray-600 dark:text-gray-300">{pub.description}</p>
               <a
                 href={pub.link}
-                className="mt-2 inline-flex items-center text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300"
+                className="mt-2 inline-flex items-center text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-500"
               >
                 <Link className="w-4 h-4 mr-1" />
-                Read More
+                Leia mais
               </a>
             </div>
           </div>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ScrollReveal from 'scrollreveal';
 import { BookOpen, Shield, Code, GraduationCap } from 'lucide-react';
-import { Modal } from '../cardsModals/Modal'; // Importando o Modal
+import { Modal } from '../cardsModals/Modal'; 
 import { ProjectsContent } from '../cardsModals/ProjectsModal';
 import { PublicationsContent } from '../cardsModals/PublicationsModal';
 
@@ -11,7 +11,6 @@ export function ProfileSection() {
     isOpen: false,
   });
 
-  // Inicializa o ScrollReveal
   useEffect(() => {
     ScrollReveal().reveal('.profile-section', {
       distance: '50px',
@@ -19,11 +18,10 @@ export function ProfileSection() {
       easing: 'ease-out',
       origin: 'top',
       delay: 500,
-      reset: true, // Permite que a animação ocorra sempre que o elemento entra na tela
+      reset: true, 
     });
   }, []);
 
-  // Funções para abrir os modais
   const openProjectsModal = () => {
     setModalState({ type: 'projects', isOpen: true });
   };
