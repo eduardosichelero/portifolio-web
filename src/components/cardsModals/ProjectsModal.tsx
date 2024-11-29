@@ -1,11 +1,12 @@
 import React from 'react';
-import { Shield, Globe, Server } from 'lucide-react';
+import { Shield, Globe, Server, ExternalLink } from 'lucide-react';
 
 interface Project {
   title: string;
   description: string;
   icon: React.ReactNode;
   tags: string[];
+  repoLink: string; 
 }
 
 const projects: Project[] = [
@@ -13,19 +14,22 @@ const projects: Project[] = [
     title: "Sistema de Detecção de Intrusão na Rede",
     description: "Desenvolvi um sistema de monitoramento de rede em tempo real usando Python e algoritmos de aprendizado de máquina para detectar e prevenir ameaças de segurança.",
     icon: <Shield className="w-6 h-6 text-indigo-600" />,
-    tags: ["Python", "ML", "Cibersegurança"]
+    tags: ["Python", "ML", "Cibersegurança"],
+    repoLink: "https://github.com/seu-usuario/intrusion-detection-system"
   },
   {
     title: "Framework Seguro para Aplicações Web",
     description: "Construí um framework seguro para aplicações web com proteção integrada contra vulnerabilidades comuns, como XSS e CSRF.",
     icon: <Globe className="w-6 h-6 text-green-600" />,
-    tags: ["TypeScript", "React", "Segurança"]
+    tags: ["TypeScript", "React", "Segurança"],
+    repoLink: "https://github.com/seu-usuario/secure-web-framework"
   },
   {
     title: "Sistema de Banco de Dados Criptografado",
     description: "Implementei um sistema de banco de dados criptografado com criptografia de ponta a ponta para armazenamento de dados sensíveis.",
     icon: <Server className="w-6 h-6 text-blue-600" />,
-    tags: ["Criptografia", "Banco de Dados", "Segurança"]
+    tags: ["Criptografia", "Banco de Dados", "Segurança"],
+    repoLink: "https://github.com/seu-usuario/encrypted-database"
   }
 ];
 
@@ -49,6 +53,16 @@ export function ProjectsContent() {
                   </span>
                 ))}
               </div>
+              {/* Botão para o repositório */}
+              <a
+                href={project.repoLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-500 font-medium"
+              >
+                Ver Repositório
+                <ExternalLink className="w-4 h-4 ml-1" />
+              </a>
             </div>
           </div>
         </div>

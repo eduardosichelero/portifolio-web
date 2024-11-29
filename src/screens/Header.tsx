@@ -63,7 +63,7 @@ export function Header() {
                 href="/dashboard"
                 className="text-gray-600 hover:text-indigo-600 font-medium dark:text-gray-300 dark:hover:text-indigo-400"
               >
-                D
+                Dashboards
               </a>
               <a
                 href="/Social"
