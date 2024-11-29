@@ -14,7 +14,7 @@ export function ProfileSection() {
   useEffect(() => {
     ScrollReveal().reveal('.profile-section', {
       distance: '50px',
-      duration: 1300,
+      duration: 1000,
       easing: 'ease-out',
       origin: 'top',
       delay: 500,

@@ -40,7 +40,7 @@ export function SocialLinks() {
   useEffect(() => {
     ScrollReveal().reveal('.social-links-container', {
       distance: '50px',
-      duration: 1300, 
+      duration: 1000, 
       easing: 'ease-out',
       origin: 'bottom',
       delay: 200,

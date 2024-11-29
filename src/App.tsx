@@ -46,19 +46,19 @@ function App() {
       title: 'Learn Advanced React Patterns',
       deadline: 'June 30, 2024',
       progress: 65,
-      category: 'Skills',
+      category: 'Habilidades',
     },
     {
       title: 'Complete AWS Certification',
       deadline: 'August 15, 2024',
       progress: 40,
-      category: 'Career',
+      category: 'Carreira',
     },
     {
       title: 'Build Portfolio Projects',
       deadline: 'July 1, 2024',
       progress: 80,
-      category: 'Personal',
+      category: 'Pessoal',
     },
   ];
 

@@ -9,11 +9,11 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold text-blue-700 mb-3 dark:text-text-dark">Sobre</h3>
             <p className="text-sm">
-              O <span className="font-bold">DevPath</span> é uma plataforma para
-              ajudar desenvolvedores a traçar metas e acompanhar seu progresso na
-              jornada de aprendizado e desenvolvimento de carreira.
-            </p>
+    Olá, sou o <span className="font-bold">Eduardo</span>, estudante de Ciência da Computação. 
+    Tenho interesse em segurança cibernética e redes. Acompanhe meus projetos e o que estou aprendendo no meu <strong>Notion</strong>!
+  </p>
           </div>
+
 
           {/* Coluna 2: Contato */}
           <div>

@@ -13,7 +13,7 @@ export function GoalCard({ title, deadline, progress, category }: GoalProps) {
   useEffect(() => {
     ScrollReveal().reveal('.goal-card', {
       distance: '50px',
-      duration: 1300, 
+      duration: 1000, 
       easing: 'ease-out',
       origin: 'bottom',
       delay: 300,
@@ -41,7 +41,7 @@ export function GoalCard({ title, deadline, progress, category }: GoalProps) {
       <div className="space-y-3">
         <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
           <Calendar className="w-4 h-4 mr-2" />
-          <span>Due: {deadline}</span>
+          <span>Data: {deadline}</span>
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">

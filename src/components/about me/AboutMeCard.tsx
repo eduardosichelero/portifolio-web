@@ -8,7 +8,7 @@ export function AboutMeCard() {
   useEffect(() => {
     ScrollReveal().reveal('.about-me-card', {
       distance: '50px',
-      duration: 1300,
+      duration: 1000,
       easing: 'ease-out',
       origin: 'bottom',
       delay: 500,

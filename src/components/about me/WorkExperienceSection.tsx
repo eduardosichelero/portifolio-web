@@ -10,42 +10,48 @@ interface Job {
 
 const jobs: Job[] = [
   {
-    title: 'Desenvolvedor Front-End',
-    company: 'TechCorp',
-    duration: 'Janeiro de 2020 - Dezembro de 2022',
+    title: 'Estagiário em Ciência da Computação',
+    company: 'Prefeitura Municipal de Carazinho',
+    duration: 'Fevereiro de 2024 - Atualmente',
     achievements: [
-      'Desenvolvi aplicações interativas utilizando React.js.',
-      'Implementei otimizações que reduziram o tempo de carregamento em 25%.',
-      'Colaborei com equipes multidisciplinares para melhorar a experiência do usuário.',
+      'Responsável pela manutenção e configuração de computadores com sistemas Windows e Linux.',
+      'Efetuo ajustes e configurações em redes locais, garantindo a conectividade e a segurança da infraestrutura.',
+      'Presto suporte técnico, tanto presencial quanto remoto, para solucionar problemas de hardware e software.',
+      'Realizo a manutenção em servidores, tanto Linux quanto Windows Server, assegurando seu bom funcionamento.',
     ],
   },
   {
-    title: 'Analista de Sistemas',
-    company: 'InfoSolutions',
-    duration: 'Março de 2018 - Dezembro de 2019',
+    title: 'Freelancer em Tecnologia da Informação',
+    company: 'Autônomo',
+    duration: 'Janeiro de 2020 - Atualmente',
     achievements: [
-      'Gerenciei projetos para a implementação de novos sistemas internos.',
-      'Forneci suporte técnico e treinamento para a equipe de operações.',
-      'Automatizei relatórios financeiros, reduzindo o tempo de processamento em 50%.',
+      'Presto serviços de manutenção preventiva e corretiva em computadores e servidores, atuando tanto no hardware quanto no software.',
+      'Instalo e configuro sistemas operacionais, como Windows e Linux, atendendo tanto a usuários domésticos quanto a empresas.',
+      'Implemento redes locais e Wi-Fi, garantindo alto desempenho e segurança para pequenas empresas.',
+      'Ofereço suporte técnico remoto e presencial, solucionando problemas e fornecendo treinamento aos usuários sobre o uso das tecnologias.',
+      'Consultoria na aquisição e upgrade de equipamentos, ajudando a otimizar a infraestrutura tecnológica dos meus clientes.',
     ],
   },
   {
-    title: 'Estagiário de TI',
-    company: 'StartupXYZ',
-    duration: 'Julho de 2017 - Fevereiro de 2018',
+    title: 'Auxiliar de Monitoramento',
+    company: 'BRK Tecnologia',
+    duration: 'Setembro de 2023 - Fevereiro de 2024',
+    location: 'Carazinho, Rio Grande do Sul, Brasil',
+    type: 'Presencial',
     achievements: [
-      'Realizei manutenção em sistemas legados e documentei processos técnicos.',
-      'Auxiliei na migração de dados para uma nova plataforma.',
-      'Criei scripts para simplificar tarefas rotineiras da equipe.',
+      'Realizei o monitoramento de veículos por meio de sistemas internos de logística, garantindo a eficiência nas operações.',
+      'Fui responsável pela expedição de cargas, utilizando ferramentas do Microsoft Office para gerenciar e otimizar os processos.',
+      'Utilizei análises de dados com Python para ajudar na otimização dos processos logísticos, melhorando a precisão e a agilidade.',
     ],
-  },
+  }
 ];
+
 
 export function WorkExperienceSection() {
   useEffect(() => {
     ScrollReveal().reveal('.work-experience-section', {
       distance: '50px',
-      duration: 1300,
+      duration: 1000,
       easing: 'ease-out',
       origin: 'bottom',
       delay: 500,
