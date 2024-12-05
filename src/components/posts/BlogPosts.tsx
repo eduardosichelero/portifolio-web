@@ -12,19 +12,20 @@ interface BlogPost {
 
 const posts: BlogPost[] = [
   {
-    title: "Entendendo Ataques de Buffer Overflow",
-    date: "15 de março de 2024",
-    excerpt: "Uma análise aprofundada sobre exploração de memória e técnicas de prevenção em sistemas modernos.",
+    title: "Advent of Cyber 2024",
+    date: "No momento",
+    excerpt: "Acompanhe minha evolução no meu primeiro evento do TryHackMe, com a resolução e pratica dos laboratórios.",
     tags: ["Segurança", "Baixo Nível"],
-    readTime: "8 min de leitura"
+    readTime: "10 min de leitura"
   },
   {
-    title: "Implementando OAuth2 com Segurança",
-    date: "10 de março de 2024",
-    excerpt: "Melhores práticas para implementar autenticação OAuth2 em aplicações web.",
-    tags: ["Segurança Web", "Autenticação"],
+    title: "Google Cyber Security",
+    date: "Atualemente",
+    excerpt: "Minhas anotações sobre a formação completa do google com ciee e coursera, atualmente no 2º módulo. ",
+    tags: ["Segurança Web", "Formação", 'Python', 'Linux'],
     readTime: "6 min de leitura"
   },
+
 
 ];
 

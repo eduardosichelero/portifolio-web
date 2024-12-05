@@ -60,32 +60,40 @@ function App() {
       progress: 80,
       category: 'Pessoal',
     },
+    {
+      title: 'Advent of Cyber 2024',
+      deadline: 'Atualmente em curso',
+      progress: 68,
+      category: 'Pessoal',
+    },
+
   ];
 
   const certificates = [
     {
-      title: 'React Developer Certification',
-      date: 'July 15, 2024',
-      issuer: 'Udemy',
-      progress: 60,
+      title: 'Google Cybersecurity Professional',
+      date: 'em andamento',
+      issuer: 'Google',
+      progress: 40,
     },
     {
-      title: 'AWS Certified Solutions Architect',
-      date: 'August 25, 2024',
-      issuer: 'Amazon',
-      progress: 85,
-    },
-    {
-      title: 'Full Stack Web Development Bootcamp',
-      date: 'June 10, 2024',
-      issuer: 'freeCodeCamp',
+      title: 'One oracle next education T6',
+      date: '16 de julho de 2024',
+      issuer: 'Oracle',
       progress: 100,
     },
     {
-      title: 'CISSP Certification',
-      date: 'September 20, 2024',
-      issuer: 'ISC2',
-      progress: 20,
+      title: 'Introduction to Generative AI',
+      date: '07 de Dezembro de 2023',
+      issuer: 'Google',
+      progress: 100,
+    },
+    
+    {
+      title: 'Advent of Cyber 2024',
+      date: 'em andamento',
+      issuer: 'TryHackMe',
+      progress: 68,
     },
   ];
 
