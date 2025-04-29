@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
-import { ExternalLink, Book, Code, Shield, Laptop } from 'lucide-react';
+import { ExternalLink, Book, Code, Shield, Laptop, HardDriveDownload} from 'lucide-react';
 
 interface Link {
   title: string;
@@ -12,10 +12,10 @@ interface Link {
 
 const links: Link[] = [
   {
-    title: "OWASP Top 10",
-    url: "https://owasp.org/www-project-top-ten/",
-    description: "Riscos essenciais de segurança em aplicações web",
-    icon: <Shield className="w-5 h-5" />,
+    title: "Drive instaladores",
+    url: "https://drive.google.com/drive/folders/1OQQPuzqtqGKy7DYDtUnlifa45rJgm90o?usp=sharing",
+    description: "Recursos úteis como instaladores e scripts",
+    icon: <HardDriveDownload className="w-5 h-5" />,
     category: "Segurança"
   },
   {

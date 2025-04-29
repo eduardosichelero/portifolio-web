@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
 import { Calendar, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface BlogPost {
   title: string;
@@ -46,9 +47,13 @@ export function BlogPosts() {
     <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800 dark:text-gray-100 blog-posts-container">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Minhas Anotações recentes</h3>
-        <button className="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 flex items-center">
-          Ver todos <ArrowRight className="w-4 h-4 ml-1" />
-        </button>
+        <Link
+  to="/blog"
+  state={{ posts }}
+  className="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 flex items-center"
+>
+  Ver todos <ArrowRight className="w-4 h-4 ml-1" />
+</Link>
       </div>
       <div className="space-y-6">
         {posts.map((post, index) => (
