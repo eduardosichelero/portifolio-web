@@ -28,7 +28,7 @@ const publications: Publication[] = [
 
 export function PublicationsContent() {
   return (
-    <div className="space-y-4 md:space-y-6 max-h-[400px] overflow-y-auto px-2">
+    <div className="space-y-4 md:space-y-6 max-h-[400px] overflow-y-auto px-2 scrollbar-transparent">
       {publications.map((pub, index) => (
         <div
           key={index}
@@ -39,18 +39,18 @@ export function PublicationsContent() {
               <BookOpen className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
             <div>
-              <h4 className="text-md font-medium text-gray-900 dark:text-white sm:text-sm">
+              <h4 className="text-lg md:text-xl font-medium text-gray-900 dark:text-white">
                 {pub.title}
               </h4>
-              <p className="text-sm text-gray-500 dark:text-gray-400 sm:text-xs">
+              <p className="text-base md:text-lg text-gray-500 dark:text-gray-400">
                 {pub.journal} • {pub.date}
               </p>
-              <p className="mt-1 text-gray-600 dark:text-gray-300 text-sm sm:text-xs">
+              <p className="mt-1 text-base md:text-lg text-gray-600 dark:text-gray-300">
                 {pub.description}
               </p>
               <a
                 href={pub.link}
-                className="mt-2 inline-flex items-center text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-500 sm:text-xs"
+                className="mt-2 inline-flex items-center text-base md:text-lg text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-500"
               >
                 <Link className="w-4 h-4 mr-1" />
                 Leia mais

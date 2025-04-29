@@ -1,7 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* Tailwind já importa isso, só adicione abaixo das diretivas @tailwind */
+.scrollbar-transparent {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.scrollbar-transparent::-webkit-scrollbar {
+  width: 8px;
+  background: transparent;
+}
+.scrollbar-transparent::-webkit-scrollbar-thumb {
+  background: transparent;
+}
 @layer components {
   .btn-primary {
     @apply inline-flex items-center space-x-2 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200;

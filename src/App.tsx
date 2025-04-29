@@ -18,6 +18,8 @@ import { Header } from './screens/Header';
 import { AllGoals } from './screens/AllGoals';
 import { AllCertificates } from './screens/AllCertificates';
 import { AllBlogPosts } from './screens/AllBlogPosts';
+import NotFound from './screens/NotFound';
+
 
 
 
@@ -219,6 +221,7 @@ function App() {
         <Route path="/goals" element={<AllGoals />} />
         <Route path="/certificates" element={<AllCertificates />} />
         <Route path="/blog" element={<AllBlogPosts />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
       <Footer />
