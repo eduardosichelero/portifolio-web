@@ -11,27 +11,27 @@ interface Link {
 const links: Link[] = [
   {
     title: "Telegram",
-    url: "https://t.me/yourusername",
+    url: "https://t.me/eduardosichelero",
     icon: <MessageCircle className="w-5 h-5" />,
   },
   {
     title: "WhatsApp",
-    url: "https://wa.me/yourphonenumber",
+    url: "https://wa.me/54999595865",
     icon: <LucideMessageCircleMore className="w-5 h-5" />,
   },
   {
     title: "GitHub",
-    url: "https://github.com/yourusername",
+    url: "https://github.com/eduardosichelero",
     icon: <Github className="w-5 h-5" />,
   },
   {
     title: "LinkedIn",
-    url: "https://linkedin.com/in/yourusername",
+    url: "https://linkedin.com/in/eduardo-sichelero",
     icon: <Linkedin className="w-5 h-5" />,
   },
   {
     title: "Instagram",
-    url: "https://instagram.com/yourusername",
+    url: "https://instagram.com/hts.dudu",
     icon: <Instagram className="w-5 h-5" />,
   },
 ];

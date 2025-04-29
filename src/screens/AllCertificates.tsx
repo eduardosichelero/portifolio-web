@@ -8,31 +8,34 @@ export function AllCertificates() {
   const location = useLocation();
   const certificatesFromDashboard = location.state?.certificates || [];
 
-  // Certificações extras, só aparecem aqui
+  // Certificações extras com links externos
   const extraCertificates = [
     {
       title: 'AWS Certified Solutions Architect',
       date: '10 de outubro de 2024',
       issuer: 'Amazon',
-      progress: 0,
+      progress: 100,
+      externalUrl: 'https://www.credly.com/badges/exemplo-aws' // Link externo adicionado
     },
     {
       title: 'Microsoft Azure Fundamentals',
       date: 'em andamento',
       issuer: 'Microsoft',
       progress: 30,
+      externalUrl: 'https://learn.microsoft.com/pt-br/certifications/exemplo-azure' // Link externo
     },
     {
       title: 'Linux Professional Institute LPIC-1',
       date: 'em andamento',
       issuer: 'LPI',
       progress: 50,
+      externalUrl: 'https://www.lpi.org/pt-br/our-certifications/exemplo-lpic' // Link externo
     },
   ];
 
   const allCertificates = [...certificatesFromDashboard, ...extraCertificates];
 
-  // Faz a tela rolar para o topo ao montar
+  // Garante que a tela comece no topo
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, []);
@@ -44,7 +47,8 @@ export function AllCertificates() {
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
           Todas as Certificações
         </h2>
-        {/* Botão de retorno logo abaixo do título */}
+        
+        {/* Botão de retorno */}
         <div className="mb-8">
           <Link
             to="/"
@@ -54,9 +58,14 @@ export function AllCertificates() {
             Voltar para o Dashboard
           </Link>
         </div>
+
+        {/* Grid de certificações */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allCertificates.map((certificate, index) => (
-            <CertificateCard key={index} {...certificate} />
+            <CertificateCard 
+              key={index} 
+              {...certificate} // Passa todas as props incluindo externalUrl
+            />
           ))}
         </div>
       </main>

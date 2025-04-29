@@ -6,7 +6,6 @@ import { ProfileSection } from './components/about me/ProfileSection';
 import { Modal } from './components/cardsModals/Modal';
 import { ProjectsContent } from './components/cardsModals/ProjectsModal';
 import { PublicationsContent } from './components/cardsModals/PublicationsModal';
-import { BlogPosts } from './components/posts/BlogPosts';
 import { UsefulLinks } from './components/links/UsefulLinks';
 import { SocialLinks } from './components/links/SocialLinks';
 import { AboutMeCard } from './components/about me/AboutMeCard';
@@ -22,7 +21,8 @@ import { StatsOverview } from './components/StatsOverview';
 import { SectionList } from './components/SectionList';
 import { RightColumn } from './components/layout/RightColumn';
 import { MainGrid } from './components/layout/MainGrid';
-import { BlogPostsSection } from './components/posts/BlogPostsSection';
+import { BlogPosts } from './components/posts/BlogPosts';
+import { goals, certificates } from './components/data/ActiveInfoProvider';
 
 function App() {
   const [modalState, setModalState] = useState<{ type: string | null; isOpen: boolean }>({
@@ -48,60 +48,6 @@ function App() {
       localStorage.setItem('theme', 'light');
     }
   }, [isDarkMode]);
-
-  const goals = [
-    {
-      title: 'Learn Advanced React Patterns',
-      deadline: 'June 30, 2024',
-      progress: 65,
-      category: 'Habilidades',
-    },
-    {
-      title: 'Complete AWS Certification',
-      deadline: 'August 15, 2024',
-      progress: 40,
-      category: 'Carreira',
-    },
-    {
-      title: 'Build Portfolio Projects',
-      deadline: 'July 1, 2024',
-      progress: 80,
-      category: 'Pessoal',
-    },
-    {
-      title: 'Advent of Cyber 2024',
-      deadline: 'Atualmente em curso',
-      progress: 68,
-      category: 'Pessoal',
-    },
-  ];
-
-  const certificates = [
-    {
-      title: 'Google Cybersecurity Professional',
-      date: 'em andamento',
-      issuer: 'Google',
-      progress: 40,
-    },
-    {
-      title: 'One oracle next education T6',
-      date: '16 de julho de 2024',
-      issuer: 'Oracle',
-      progress: 100,
-    },
-    {
-      title: 'Introduction to Generative AI',
-      date: '07 de Dezembro de 2023',
-      issuer: 'Google',
-      progress: 100,
-    },
-    {
-      title: 'Advent of Cyber 2024',
-      date: 'em andamento',
-      issuer: 'TryHackMe',
-      progress: 68,
-    },
-  ];
 
   return (
     <div
