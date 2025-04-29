@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { CertificateCard } from '../components/about me/CertificateCard';
 import { Header } from './Header';
@@ -32,22 +32,28 @@ export function AllCertificates() {
 
   const allCertificates = [...certificatesFromDashboard, ...extraCertificates];
 
+  // Faz a tela rolar para o topo ao montar
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, []);
+
   return (
     <div className="min-h-screen bg-background-light dark:bg-gray-900">
       <Header />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+          Todas as Certificações
+        </h2>
+        {/* Botão de retorno logo abaixo do título */}
         <div className="mb-8">
           <Link
             to="/"
-            className="flex items-center text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
+            className="inline-flex items-center px-4 py-2 bg-indigo-600 text-white rounded-full shadow hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 transition"
           >
             <ArrowLeft className="w-5 h-5 mr-2" />
             Voltar para o Dashboard
           </Link>
         </div>
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-          Todas as Certificações
-        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allCertificates.map((certificate, index) => (
             <CertificateCard key={index} {...certificate} />
