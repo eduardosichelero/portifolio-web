@@ -22,6 +22,7 @@ import { StatsOverview } from './components/StatsOverview';
 import { SectionList } from './components/SectionList';
 import { RightColumn } from './components/layout/RightColumn';
 import { MainGrid } from './components/layout/MainGrid';
+import { BlogPostsSection } from './components/posts/BlogPostsSection';
 
 function App() {
   const [modalState, setModalState] = useState<{ type: string | null; isOpen: boolean }>({
