@@ -108,25 +108,18 @@ export function NotionNotes() {
                     {note.texto}
                   </p>
                 )}
-                {note.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
-                    {note.tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        style={{
-                          backgroundColor: '#394151',
-                          color: '#fff',
-                          borderRadius: '9999px',
-                          padding: '0.25rem 0.75rem',
-                          fontSize: '0.726rem',
-                          fontWeight: 500,
-                        }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
+{note.tags.length > 0 && (
+  <div className="flex flex-wrap gap-2">
+    {note.tags.map((tag, index) => (
+      <span
+        key={index}
+        className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
+      >
+        {tag}
+      </span>
+    ))}
+  </div>
+)}
               </a>
             );
           })}

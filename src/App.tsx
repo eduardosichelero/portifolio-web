@@ -25,13 +25,10 @@ import { BlogPosts } from './components/posts/BlogPosts';
 import { goals, certificates } from './components/data/ActiveInfoProvider';
 import { NotionNotes } from './components/data/NotionNotes';
 import { AllNotionNotes } from './components/data/AllNotionNotes';
+import { AppBackground } from './components/AppBackground';
 
 function App() {
-  const [modalState, setModalState] = useState<{ type: string | null; isOpen: boolean }>({
-    type: null,
-    isOpen: false,
-  });
-
+  const [modalState, setModalState] = useState({ type: null, isOpen: false });
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
@@ -52,16 +49,7 @@ function App() {
   }, [isDarkMode]);
 
   return (
-    <div
-      className="min-h-screen bg-background-light dark:bg-gray-900"
-      style={{
-        backgroundImage: isDarkMode
-          ? 'radial-gradient(rgba(240, 58, 229, 0.20) 2px, transparent 2px), radial-gradient(rgba(240, 58, 229, 0.20) 2px, transparent 2px)'
-          : 'radial-gradient(rgba(240, 58, 229, 0.20) 2px, transparent 2px), radial-gradient(rgba(240, 58, 229, 0.20) 2px, transparent 2px)',
-        backgroundSize: '100px 100px',
-        backgroundPosition: '0 0, 50px 50px',
-      }}
-    >
+    <AppBackground isDarkMode={isDarkMode}>
       <Header />
 
       <Routes>
@@ -92,7 +80,7 @@ function App() {
                       seeAllTo="/certificates"
                       seeAllState={{ certificates }}
                     />
-                   {/*logPosts /> COMENTÁRIO JSX */}
+                    {/* BlogPosts /> COMENTÁRIO JSX */}
                     <NotionNotes />
                   </>
                 }
@@ -112,7 +100,6 @@ function App() {
         <Route path="/certificates" element={<AllCertificates />} />
         <Route path="/blog" element={<AllBlogPosts />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<NotionNotes />} />
         <Route path="/notes" element={<AllNotionNotes />} />
       </Routes>
 
@@ -134,7 +121,7 @@ function App() {
       >
         <PublicationsContent />
       </Modal>
-    </div>
+    </AppBackground>
   );
 }
 

@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Calendar, ArrowLeft, Book } from 'lucide-react';
 import { Header } from '../../screens/Header';
+import { AppBackground } from '../AppBackground'; // ajuste o caminho conforme seu projeto
 
 const calculateReadingTime = (text) => {
   const wordsPerMinute = 200;
@@ -20,14 +21,37 @@ const formatDate = (dateString) => {
 
 export function AllNotionNotes() {
   const location = useLocation();
-  const notes = location.state?.notes || [];
+  const [notes, setNotes] = useState(location.state?.notes || []);
+  const [loading, setLoading] = useState(!location.state?.notes);
+
+  // Detecta tema escuro (ajuste conforme seu contexto de tema)
+  const [isDarkMode, setIsDarkMode] = useState(
+    () =>
+      localStorage.getItem('theme') === 'dark' ||
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+    if (!location.state?.notes) {
+      fetch('https://portifolio-api-wmju.onrender.com/api/notion/notes')
+        .then(res => res.json())
+        .then(data => setNotes(data))
+        .finally(() => setLoading(false));
+    }
+  }, [location.state]);
+
+  useEffect(() => {
+    const handler = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+    };
+    window.addEventListener('storage', handler);
+    return () => window.removeEventListener('storage', handler);
   }, []);
 
   return (
-    <div className="min-h-screen bg-background-light dark:bg-gray-900">
+    <AppBackground isDarkMode={isDarkMode}>
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
@@ -43,7 +67,9 @@ export function AllNotionNotes() {
           </Link>
         </div>
         <div className="space-y-6">
-          {notes.length === 0 ? (
+          {loading ? (
+            <div className="text-center py-4 text-gray-500">Carregando...</div>
+          ) : notes.length === 0 ? (
             <div className="text-center py-4 text-gray-500">Nenhuma anotação encontrada</div>
           ) : (
             notes.map((note, index) => {
@@ -77,7 +103,7 @@ export function AllNotionNotes() {
                     {note.tags && note.tags.map((tag, tagIndex) => (
                       <span
                         key={tagIndex}
-                        className="px-3 py-1 text-sm md:text-base font-medium bg-gray-100 text-gray-600 rounded-full dark:bg-gray-700 dark:text-gray-200"
+                        className="px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
                       >
                         {tag}
                       </span>
@@ -89,6 +115,6 @@ export function AllNotionNotes() {
           )}
         </div>
       </main>
-    </div>
+    </AppBackground>
   );
 }

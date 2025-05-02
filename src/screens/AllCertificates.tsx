@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { CertificateCard } from '../components/about me/CertificateCard';
 import { Header } from './Header';
 import { ArrowLeft } from 'lucide-react';
+import { AppBackground } from '../components/AppBackground'; // ajuste o caminho conforme seu projeto
 
 export function AllCertificates() {
   const location = useLocation();
@@ -15,33 +16,46 @@ export function AllCertificates() {
       date: '10 de outubro de 2024',
       issuer: 'Amazon',
       progress: 100,
-      externalUrl: 'https://www.credly.com/badges/exemplo-aws' // Link externo adicionado
+      externalUrl: 'https://www.credly.com/badges/exemplo-aws'
     },
     {
       title: 'Microsoft Azure Fundamentals',
       date: 'em andamento',
       issuer: 'Microsoft',
       progress: 30,
-      externalUrl: 'https://learn.microsoft.com/pt-br/certifications/exemplo-azure' // Link externo
+      externalUrl: 'https://learn.microsoft.com/pt-br/certifications/exemplo-azure'
     },
     {
       title: 'Linux Professional Institute LPIC-1',
       date: 'em andamento',
       issuer: 'LPI',
       progress: 50,
-      externalUrl: 'https://www.lpi.org/pt-br/our-certifications/exemplo-lpic' // Link externo
+      externalUrl: 'https://www.lpi.org/pt-br/our-certifications/exemplo-lpic'
     },
   ];
 
   const allCertificates = [...certificatesFromDashboard, ...extraCertificates];
 
-  // Garante que a tela comece no topo
+  // Detecta tema escuro (ajuste conforme seu contexto de tema)
+  const [isDarkMode, setIsDarkMode] = useState(
+    () =>
+      localStorage.getItem('theme') === 'dark' ||
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
+
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+    // Atualiza o estado se o tema mudar em outro local
+    const handler = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+    };
+    window.addEventListener('storage', handler);
+    return () => window.removeEventListener('storage', handler);
   }, []);
 
   return (
-    <div className="min-h-screen bg-background-light dark:bg-gray-900">
+    <AppBackground isDarkMode={isDarkMode}>
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
@@ -64,11 +78,11 @@ export function AllCertificates() {
           {allCertificates.map((certificate, index) => (
             <CertificateCard 
               key={index} 
-              {...certificate} // Passa todas as props incluindo externalUrl
+              {...certificate}
             />
           ))}
         </div>
       </main>
-    </div>
+    </AppBackground>
   );
 }

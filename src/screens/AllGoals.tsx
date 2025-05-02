@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { GoalCard } from '../components/cardsModals/GoalCard';
 import { Header } from './Header';
 import { ArrowLeft } from 'lucide-react';
+import { AppBackground } from '../components/AppBackground'; // ajuste o caminho conforme seu projeto
 
 export function AllGoals() {
   const location = useLocation();
@@ -36,16 +37,28 @@ export function AllGoals() {
     },
   ];
 
-  // Mescla os objetivos do dashboard com os exclusivos desta tela
   const allGoals = [...goalsFromDashboard, ...extraGoals];
 
-  // Faz a tela rolar para o topo ao montar
+  // Detecta tema escuro (ajuste conforme seu contexto de tema)
+  const [isDarkMode, setIsDarkMode] = useState(
+    () =>
+      localStorage.getItem('theme') === 'dark' ||
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+  );
+
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+    // Atualiza o estado se o tema mudar em outro local
+    const handler = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+    };
+    window.addEventListener('storage', handler);
+    return () => window.removeEventListener('storage', handler);
   }, []);
 
   return (
-    <div className="min-h-screen bg-background-light dark:bg-gray-900">
+    <AppBackground isDarkMode={isDarkMode}>
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
@@ -67,6 +80,6 @@ export function AllGoals() {
           ))}
         </div>
       </main>
-    </div>
+    </AppBackground>
   );
 }

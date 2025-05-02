@@ -10,7 +10,17 @@ export function Header() {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // Fecha o menu ao pressionar ESC
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    document.addEventListener('keydown', handleEsc);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('keydown', handleEsc);
+    };
   }, []);
 
   // Fecha o menu ao navegar
@@ -124,15 +134,15 @@ export function Header() {
               </Link>
             </li>
             <li>
-              <Link
-                to="/blog"
-                className="flex items-center px-3 py-2 rounded-md hover:bg-pink-50 dark:hover:bg-pink-900 transition"
-                title="Minhas Anotações Recentes"
-                onClick={handleNav}
-              >
-                <BookOpen className="w-5 h-5 mr-2" />
-                Anotações
-              </Link>
+            <Link
+  to="/notes"
+  className="flex items-center px-3 py-2 rounded-md hover:bg-pink-50 dark:hover:bg-pink-900 transition"
+  title="Minhas Anotações Recentes"
+  onClick={handleNav}
+>
+  <BookOpen className="w-5 h-5 mr-2" />
+  Anotações
+</Link>
             </li>
           </ul>
         </nav>
