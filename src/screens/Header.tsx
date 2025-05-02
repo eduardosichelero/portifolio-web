@@ -1,25 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Menu, X, FileDown, MessageCircle, Send, Award, Target, BookOpen } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { DarkModeToggle } from '../components/useful/DarkModeToggle';
+import React, { useState, useEffect } from "react";
+import {
+  Layout,
+  Menu,
+  X,
+  FileDown,
+  MessageCircle,
+  Send,
+  Award,
+  Target,
+  BookOpen,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import { DarkModeToggle } from "../components/useful/DarkModeToggle";
 
-export function Header() {
+// Receba "goals" como prop ou do contexto global
+export function Header({ goals }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     // Fecha o menu ao pressionar ESC
     const handleEsc = (e) => {
-      if (e.key === 'Escape') setMenuOpen(false);
+      if (e.key === "Escape") setMenuOpen(false);
     };
-    document.addEventListener('keydown', handleEsc);
+    document.addEventListener("keydown", handleEsc);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      document.removeEventListener('keydown', handleEsc);
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("keydown", handleEsc);
     };
   }, []);
 
@@ -29,7 +40,7 @@ export function Header() {
   return (
     <header
       className={`bg-white shadow-sm fixed w-full z-50 transition-all duration-300 ${
-        isScrolled ? 'shadow-md' : ''
+        isScrolled ? "shadow-md" : ""
       } mb-8 dark:bg-gray-800`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
@@ -49,7 +60,11 @@ export function Header() {
             aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
             onClick={() => setMenuOpen(!menuOpen)}
           >
-            {menuOpen ? <X className="w-7 h-7" /> : <Menu className="w-7 h-7" />}
+            {menuOpen ? (
+              <X className="w-7 h-7" />
+            ) : (
+              <Menu className="w-7 h-7" />
+            )}
           </button>
           {/* Alternador de tema */}
           <DarkModeToggle />
@@ -58,12 +73,14 @@ export function Header() {
         {/* Menu lateral */}
         <nav
           className={`fixed top-0 right-0 h-full w-72 max-w-full bg-white dark:bg-gray-900 shadow-lg z-50 transform transition-transform duration-300 ${
-            menuOpen ? 'translate-x-0' : 'translate-x-full'
+            menuOpen ? "translate-x-0" : "translate-x-full"
           } flex flex-col`}
           aria-label="Menu principal"
         >
           <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-            <span className="font-bold text-lg text-indigo-600 dark:text-indigo-400">Menu</span>
+            <span className="font-bold text-lg text-indigo-600 dark:text-indigo-400">
+              Menu
+            </span>
             <button
               className="p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
               onClick={() => setMenuOpen(false)}
@@ -125,6 +142,7 @@ export function Header() {
             <li>
               <Link
                 to="/goals"
+                state={goals ? { goals } : undefined}
                 className="flex items-center px-3 py-2 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900 transition"
                 title="Objetivos do Momento"
                 onClick={handleNav}
@@ -134,15 +152,15 @@ export function Header() {
               </Link>
             </li>
             <li>
-            <Link
-  to="/notes"
-  className="flex items-center px-3 py-2 rounded-md hover:bg-pink-50 dark:hover:bg-pink-900 transition"
-  title="Minhas Anotações Recentes"
-  onClick={handleNav}
->
-  <BookOpen className="w-5 h-5 mr-2" />
-  Anotações
-</Link>
+              <Link
+                to="/notes"
+                className="flex items-center px-3 py-2 rounded-md hover:bg-pink-50 dark:hover:bg-pink-900 transition"
+                title="Minhas Anotações Recentes"
+                onClick={handleNav}
+              >
+                <BookOpen className="w-5 h-5 mr-2" />
+                Anotações
+              </Link>
             </li>
           </ul>
         </nav>

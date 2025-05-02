@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Calendar, ArrowLeft, Book } from 'lucide-react';
 import { Header } from '../../screens/Header';
 import { AppBackground } from '../AppBackground'; // ajuste o caminho conforme seu projeto
@@ -21,6 +21,7 @@ const formatDate = (dateString) => {
 
 export function AllNotionNotes() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [notes, setNotes] = useState(location.state?.notes || []);
   const [loading, setLoading] = useState(!location.state?.notes);
 
@@ -49,6 +50,17 @@ export function AllNotionNotes() {
     window.addEventListener('storage', handler);
     return () => window.removeEventListener('storage', handler);
   }, []);
+
+  // ESC para voltar para a tela inicial
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        navigate('/');
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [navigate]);
 
   return (
     <AppBackground isDarkMode={isDarkMode}>

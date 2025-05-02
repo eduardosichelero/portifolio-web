@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { CertificateCard } from '../components/about me/CertificateCard';
 import { Header } from './Header';
 import { ArrowLeft } from 'lucide-react';
-import { AppBackground } from '../components/AppBackground'; // ajuste o caminho conforme seu projeto
+import { AppBackground } from '../components/AppBackground';
 
 export function AllCertificates() {
   const location = useLocation();
+  const navigate = useNavigate();
   const certificatesFromDashboard = location.state?.certificates || [];
 
-  // Certificações extras com links externos
+  // Certificações completas - adicionei todas as que aparecem na segunda imagem
   const extraCertificates = [
     {
       title: 'AWS Certified Solutions Architect',
@@ -32,9 +33,45 @@ export function AllCertificates() {
       progress: 50,
       externalUrl: 'https://www.lpi.org/pt-br/our-certifications/exemplo-lpic'
     },
+    {
+      title: 'Google Cybersecurity Professional',
+      date: 'em andamento',
+      issuer: 'Google',
+      progress: 40,
+      externalUrl: 'https://www.coursera.org/professional-certificates/google-cybersecurity'
+    },
+    {
+      title: 'One Oracle Next Education T6',
+      date: '16 de julho de 2024',
+      issuer: 'Oracle',
+      progress: 100,
+      externalUrl: 'https://www.oracle.com/br/education/oracle-next-education/'
+    },
+    {
+      title: 'Introduction to Generative AI',
+      date: '07 de dezembro de 2023',
+      issuer: 'Google',
+      progress: 100,
+      externalUrl: 'https://cloud.google.com/training/generative-ai'
+    },
+    {
+      title: 'Advent of Cyber 2024',
+      date: 'em andamento',
+      issuer: 'TryHackMe',
+      progress: 68,
+      externalUrl: 'https://tryhackme.com/christmas'
+    },
   ];
 
-  const allCertificates = [...certificatesFromDashboard, ...extraCertificates];
+  // Garante que não haverá duplicação de certificados
+  const allCertificates = [...certificatesFromDashboard];
+  
+  // Adiciona apenas certificados extras que não existem no dashboard
+  extraCertificates.forEach(extra => {
+    if (!allCertificates.some(cert => cert.title === extra.title)) {
+      allCertificates.push(extra);
+    }
+  });
 
   // Detecta tema escuro (ajuste conforme seu contexto de tema)
   const [isDarkMode, setIsDarkMode] = useState(
@@ -53,6 +90,17 @@ export function AllCertificates() {
     window.addEventListener('storage', handler);
     return () => window.removeEventListener('storage', handler);
   }, []);
+
+  // ESC para voltar para a tela inicial
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') {
+        navigate('/');
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [navigate]);
 
   return (
     <AppBackground isDarkMode={isDarkMode}>

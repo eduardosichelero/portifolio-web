@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { GoalCard } from '../components/cardsModals/GoalCard';
 import { Header } from './Header';
 import { ArrowLeft } from 'lucide-react';
-import { AppBackground } from '../components/AppBackground'; // ajuste o caminho conforme seu projeto
+import { AppBackground } from '../components/AppBackground';
 
 export function AllGoals() {
-  const location = useLocation();
-  const goalsFromDashboard = location.state?.goals || [];
+  const navigate = useNavigate();
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Objetivos exclusivos desta tela
-  const extraGoals = [
+  // Lista COMPLETA de objetivos (estática)
+  const allGoals = [
+    // Objetivos padrão do dashboard
+    {
+      title: 'Finalizar curso de React Avançado',
+      deadline: '2024-12-01',
+      progress: 75,
+      category: 'Estudos'
+    },
+    // Objetivos extras
     {
       title: 'Publicar artigo científico em 2025',
       deadline: 'December 20, 2025',
@@ -37,25 +45,33 @@ export function AllGoals() {
     },
   ];
 
-  const allGoals = [...goalsFromDashboard, ...extraGoals];
-
-  // Detecta tema escuro (ajuste conforme seu contexto de tema)
-  const [isDarkMode, setIsDarkMode] = useState(
-    () =>
-      localStorage.getItem('theme') === 'dark' ||
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-  );
-
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    
+    // Verificação do tema
+    setIsDarkMode(
+      localStorage.getItem('theme') === 'dark' ||
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    );
+  }, []);
 
-    // Atualiza o estado se o tema mudar em outro local
+  // Controle do tema
+  useEffect(() => {
     const handler = () => {
       setIsDarkMode(document.documentElement.classList.contains('dark'));
     };
     window.addEventListener('storage', handler);
     return () => window.removeEventListener('storage', handler);
   }, []);
+
+  // Controle do ESC
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') navigate('/');
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [navigate]);
 
   return (
     <AppBackground isDarkMode={isDarkMode}>
@@ -64,7 +80,7 @@ export function AllGoals() {
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
           Todos os Objetivos do Momento
         </h2>
-        {/* Botão de retorno logo abaixo do título */}
+        
         <div className="mb-8">
           <Link
             to="/"
@@ -74,6 +90,7 @@ export function AllGoals() {
             Voltar para o Dashboard
           </Link>
         </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allGoals.map((goal, index) => (
             <GoalCard key={index} {...goal} />
