@@ -1,27 +1,38 @@
 import React from 'react';
 import { Trophy, Target, CheckCircle2 } from 'lucide-react';
 
-export function StatsOverview() {
+interface StatsOverviewProps {
+  totalGoals: number;
+  completedGoals: number;
+  completionRate: number;
+}
+
+export function StatsOverview({ 
+  totalGoals,
+  completedGoals,
+  completionRate 
+}: StatsOverviewProps) {
   const stats = [
     {
       label: "Meus Objetivos",
-      value: 8,
+      value: totalGoals,
       icon: <Target className="w-6 h-6 text-blue-600" />,
       bg: "bg-blue-50",
     },
     {
       label: "Completos",
-      value: 12,
+      value: completedGoals,
       icon: <Trophy className="w-6 h-6 text-green-600" />,
       bg: "bg-green-50",
     },
     {
       label: "Como estou indo",
-      value: "85%",
+      value: `${Math.round(completionRate)}%`,
       icon: <CheckCircle2 className="w-6 h-6 text-purple-600" />,
       bg: "bg-purple-50",
     },
   ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       {stats.map((stat, idx) => (

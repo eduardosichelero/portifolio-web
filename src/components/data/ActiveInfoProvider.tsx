@@ -4,7 +4,7 @@ export const goals = [
   {
     title: 'Learn Advanced React Patterns',
     deadline: '30 de junho de 2024',
-    progress: 65,
+    progress: 100,
     category: 'Habilidades',
   },
   {

@@ -13,7 +13,6 @@ import { WorkExperienceSection } from './components/about me/WorkExperienceSecti
 import { CertificateCard } from './components/about me/CertificateCard';
 import { Footer } from './screens/Footer';
 import { Header } from './screens/Header';
-import { AllGoals } from './screens/AllGoals';
 import { AllCertificates } from './screens/AllCertificates';
 import { AllBlogPosts } from './screens/AllBlogPosts';
 import NotFound from './screens/NotFound';
@@ -26,10 +25,20 @@ import { goals, certificates } from './components/data/ActiveInfoProvider';
 import { NotionNotes } from './components/data/NotionNotes';
 import { AllNotionNotes } from './components/data/AllNotionNotes';
 import { AppBackground } from './components/AppBackground';
+import { allGoalsData } from './components/data/goalsData';
+import { AllGoals } from './screens/AllGoals';
 
 function App() {
   const [modalState, setModalState] = useState({ type: null, isOpen: false });
   const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Para o dashboard, mostre apenas os 4 primeiros:
+  const previewGoals = allGoalsData.slice(0, 4);
+  const totalGoals = allGoalsData.length;
+  const completedGoals = allGoalsData.filter(goal => goal.progress === 100).length;
+  const completionRate = totalGoals > 0 
+    ? Math.round((completedGoals / totalGoals) * 100)
+    : 0;
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -61,17 +70,21 @@ function App() {
               <AboutMeCard />
               <WorkExperienceSection />
 
-              <StatsOverview />
+              <StatsOverview 
+                totalGoals={totalGoals}
+                completedGoals={completedGoals}
+                completionRate={completionRate}
+              />
 
               <MainGrid
                 left={
                   <>
                     <SectionList
                       title="Objetivos do momento"
-                      items={goals}
+                      items={previewGoals} // apenas 4!
                       Card={GoalCard}
                       seeAllTo="/goals"
-                      seeAllState={{ goals }}
+                      seeAllState={{}} // não precisa passar goals via state
                     />
                     <SectionList
                       title="Minhas Certificações"
@@ -80,7 +93,6 @@ function App() {
                       seeAllTo="/certificates"
                       seeAllState={{ certificates }}
                     />
-                    {/* BlogPosts /> COMENTÁRIO JSX */}
                     <NotionNotes />
                   </>
                 }
