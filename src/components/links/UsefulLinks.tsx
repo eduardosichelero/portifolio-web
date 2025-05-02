@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
-import { ExternalLink, Book, Code, Shield, Laptop, HardDriveDownload} from 'lucide-react';
+import { ExternalLink, Book, Code, Shield, Laptop, HardDriveDownload, NotebookPen } from 'lucide-react';
 
 interface Link {
   title: string;
   url: string;
   description: string;
   icon: React.ReactNode;
-  category: string;
+  category: string[];
 }
 
 const links: Link[] = [
@@ -16,28 +16,35 @@ const links: Link[] = [
     url: "https://drive.google.com/drive/folders/1OQQPuzqtqGKy7DYDtUnlifa45rJgm90o?usp=sharing",
     description: "Recursos úteis como instaladores e scripts",
     icon: <HardDriveDownload className="w-5 h-5" />,
-    category: "Segurança"
+    category: ["Segurança", "Ferramentas"]
+  },
+  {
+    title: "Notion",
+    url: "https://eduardosichelero.notion.site/Caderno-de-Anota-es-16b567501ddb45aea10ea7e0894da4de",
+    description: "Caderno de anotações",
+    icon: <NotebookPen className="w-5 h-5" />,
+    category: ["Anotações"]
   },
   {
     title: "Curso de Criptografia",
     url: "https://www.coursera.org/learn/crypto",
     description: "Fundamentos de criptografia da Stanford",
     icon: <Book className="w-5 h-5" />,
-    category: "Aprendizado"
+    category: ["Aprendizado"]
   },
   {
-    title: "CTF Time",
-    url: "https://ctftime.org/",
-    description: "Competições de Capture The Flag",
-    icon: <Laptop className="w-5 h-5" />,
-    category: "Prática"
+    title: "Google Cybersecurity",
+    url: "https://www.coursera.org/programs/cybersecurity-10mk1/professional-certificates/google-cybersecurity?collectionId=3s0c9",
+    description: "Programa de certificação do Google",
+    icon: <Book className="w-5 h-5" />,
+    category: ["Segurança", "Aprendizado"]
   },
   {
     title: "Ferramentas de Segurança",
     url: "https://github.com/topics/security-tools",
     description: "Ferramentas open source de segurança",
     icon: <Code className="w-5 h-5" />,
-    category: "Ferramentas"
+    category: ["Ferramentas"]
   }
 ];
 
@@ -76,9 +83,16 @@ export function UsefulLinks() {
                 <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-400 group-hover:text-indigo-600" />
               </div>
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{link.description}</p>
-              <span className="mt-2 inline-block px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full">
-                {link.category}
-              </span>
+              <div className="mt-2 flex flex-wrap gap-1">
+                {link.category.map((cat, i) => (
+                  <span
+                    key={i}
+                    className="inline-block px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-full"
+                  >
+                    {cat}
+                  </span>
+                ))}
+              </div>
             </div>
           </a>
         ))}
