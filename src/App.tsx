@@ -23,6 +23,8 @@ import { RightColumn } from './components/layout/RightColumn';
 import { MainGrid } from './components/layout/MainGrid';
 import { BlogPosts } from './components/posts/BlogPosts';
 import { goals, certificates } from './components/data/ActiveInfoProvider';
+import { NotionNotes } from './components/data/NotionNotes';
+import { AllNotionNotes } from './components/data/AllNotionNotes';
 
 function App() {
   const [modalState, setModalState] = useState<{ type: string | null; isOpen: boolean }>({
@@ -90,7 +92,8 @@ function App() {
                       seeAllTo="/certificates"
                       seeAllState={{ certificates }}
                     />
-                    <BlogPosts />
+                   {/*logPosts /> COMENTÁRIO JSX */}
+                    <NotionNotes />
                   </>
                 }
                 right={
@@ -109,6 +112,8 @@ function App() {
         <Route path="/certificates" element={<AllCertificates />} />
         <Route path="/blog" element={<AllBlogPosts />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<NotionNotes />} />
+        <Route path="/notes" element={<AllNotionNotes />} />
       </Routes>
 
       <Footer />

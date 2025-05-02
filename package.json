@@ -19,6 +19,7 @@
     "react-dom": "^18.3.1",
     "react-github-user-stats": "^1.0.9",
     "react-icons": "^5.3.0",
+    "react-reading-time-estimator": "^1.0.0",
     "react-router-dom": "^7.0.1",
     "scrollreveal": "^4.0.9"
   },
