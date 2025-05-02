@@ -25,7 +25,7 @@ export function NotionNotes() {
       reset: true,
     });
 
-    fetch('http://localhost:3001/api/notion/notes')
+    fetch(`${import.meta.env.VITE_API_URL}/api/notion/notes`)
       .then(res => res.json())
       .then(data => {
         const sorted = [...data].sort((a, b) => new Date(b.createdTime) - new Date(a.createdTime));
