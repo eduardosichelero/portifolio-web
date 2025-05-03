@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoalCard } from '../components/cardsModals/GoalCard';
-import { Header } from './Header';
+import { Header } from '../screens/Header';
 import { ArrowLeft } from 'lucide-react';
 import { AppBackground } from '../components/AppBackground';
-import { allGoalsData } from '../components/data/goalsData';
+import { allGoalsData, Goal } from '../components/data/goalsData';
 
 export function AllGoals() {
   const navigate = useNavigate();
@@ -12,15 +12,12 @@ export function AllGoals() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    
-    // Verificação inicial do tema
     setIsDarkMode(
       localStorage.getItem('theme') === 'dark' ||
       window.matchMedia('(prefers-color-scheme: dark)').matches
     );
   }, []);
 
-  // Sincroniza o tema com alterações externas
   useEffect(() => {
     const handler = () => {
       setIsDarkMode(document.documentElement.classList.contains('dark'));
@@ -29,7 +26,6 @@ export function AllGoals() {
     return () => window.removeEventListener('storage', handler);
   }, []);
 
-  // Controle de navegação com ESC
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') navigate('/');
@@ -57,13 +53,10 @@ export function AllGoals() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allGoals.map((goal, index) => (
+          {allGoalsData.map((goal: Goal, index: number) => (
             <GoalCard 
-              key={goal.title + index} // Chave mais segura
-              title={goal.title}
-              deadline={goal.deadline}
-              progress={goal.progress}
-              category={goal.category}
+              key={goal.title + index}
+              {...goal}
             />
           ))}
         </div>
