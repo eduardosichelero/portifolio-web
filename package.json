@@ -12,7 +12,7 @@
     "deploy": "gh-pages -d dist",
     "start": "vite"
   },
-  "homepage": "https://eduardosichelero.github.io/Portifolio-web/",
+  "homepage": "https://eduardosichelero.github.io/portifolio-web/",
   "dependencies": {
     "lucide-react": "^0.344.0",
     "react": "^18.3.1",
