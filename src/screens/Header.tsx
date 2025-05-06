@@ -10,13 +10,36 @@ import {
   Target,
   BookOpen,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { DarkModeToggle } from "../components/useful/DarkModeToggle";
 
-// Receba "goals" como prop ou do contexto global
 export function Header({ goals }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [notes, setNotes] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  // Fetch Notion notes
+  useEffect(() => {
+    // We'll only fetch when needed to avoid unnecessary API calls
+    const fetchNotes = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://portifolio-api-mu.vercel.app'}/api/notion/notes`);
+        if (!response.ok) throw new Error('Failed to fetch notes');
+        const data = await response.json();
+        setNotes(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching notes:', error);
+        setLoading(false);
+      }
+    };
+    
+    // Prefetch notes so they're ready when needed
+    fetchNotes();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
@@ -37,6 +60,12 @@ export function Header({ goals }) {
   // Fecha o menu ao navegar
   const handleNav = () => setMenuOpen(false);
 
+  // Navigate to notes with data
+  const navigateToNotes = () => {
+    handleNav(); // Close menu
+    navigate("/notes", { state: { notes } });
+  };
+
   return (
     <header
       className={`bg-white shadow-sm fixed w-full z-50 transition-all duration-300 ${
@@ -54,7 +83,6 @@ export function Header({ goals }) {
 
         {/* Botões do lado direito */}
         <div className="flex items-center space-x-2">
-          {/* Botão do menu hambúrguer */}
           <button
             className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
             aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
@@ -66,7 +94,6 @@ export function Header({ goals }) {
               <Menu className="w-7 h-7" />
             )}
           </button>
-          {/* Alternador de tema */}
           <DarkModeToggle />
         </div>
 
@@ -152,15 +179,21 @@ export function Header({ goals }) {
               </Link>
             </li>
             <li>
-              <Link
-                to="/notes"
-                className="flex items-center px-3 py-2 rounded-md hover:bg-pink-50 dark:hover:bg-pink-900 transition"
-                title="Minhas Anotações Recentes"
-                onClick={handleNav}
-              >
-                <BookOpen className="w-5 h-5 mr-2" />
-                Anotações
-              </Link>
+              {loading ? (
+                <span className="flex items-center px-3 py-2 rounded-md text-gray-400">
+                  <BookOpen className="w-5 h-5 mr-2" />
+                  Carregando...
+                </span>
+              ) : (
+                <button
+                  onClick={navigateToNotes}
+                  className="flex items-center w-full text-left px-3 py-2 rounded-md hover:bg-pink-50 dark:hover:bg-pink-900 transition"
+                  title="Todas as Anotações do Notion"
+                >
+                  <BookOpen className="w-5 h-5 mr-2" />
+                  Anotações
+                </button>
+              )}
             </li>
           </ul>
         </nav>
