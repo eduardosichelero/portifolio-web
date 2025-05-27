@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Calendar, ArrowLeft, Book } from 'lucide-react';
 import { Header } from '../../screens/Header';
-import { AppBackground } from '../AppBackground'; // ajuste o caminho conforme seu projeto
+import { AppBackground } from '../AppBackground'; 
 
 const calculateReadingTime = (text) => {
   const wordsPerMinute = 200;
@@ -25,7 +25,6 @@ export function AllNotionNotes() {
   const [notes, setNotes] = useState(location.state?.notes || []);
   const [loading, setLoading] = useState(!location.state?.notes);
 
-  // Detecta tema escuro (ajuste conforme seu contexto de tema)
   const [isDarkMode, setIsDarkMode] = useState(
     () =>
       localStorage.getItem('theme') === 'dark' ||
@@ -51,7 +50,6 @@ export function AllNotionNotes() {
     return () => window.removeEventListener('storage', handler);
   }, []);
 
-  // ESC para voltar para a tela inicial
   useEffect(() => {
     const handleEsc = (e) => {
       if (e.key === 'Escape') {
