@@ -12,7 +12,6 @@ interface ModalProps {
 export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // Fechar com ESC
   useEffect(() => {
     if (!isOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -22,7 +21,6 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  // Foco no modal ao abrir
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {

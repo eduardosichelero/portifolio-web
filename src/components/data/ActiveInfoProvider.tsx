@@ -33,7 +33,6 @@ export const certificates = [
     date: 'em andamento',
     issuer: 'Google',
     progress: 40,
-    // externalUrl: '', // Não disponível ainda
   },
   {
     title: 'One Oracle Next Education T6',
@@ -54,6 +53,5 @@ export const certificates = [
     date: 'em andamento',
     issuer: 'TryHackMe',
     progress: 68,
-    // externalUrl: '', // Não disponível ainda
   },
 ];

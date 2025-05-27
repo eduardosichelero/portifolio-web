@@ -3,7 +3,6 @@ import ScrollReveal from 'scrollreveal';
 import { Calendar, Clock, Book, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-// Função para calcular tempo de leitura
 const calculateReadingTime = (text) => {
   const wordsPerMinute = 200;
   const words = text ? text.trim().split(/\s+/).length : 0;

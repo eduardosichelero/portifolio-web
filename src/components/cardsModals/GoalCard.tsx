@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
 import { Calendar, CheckCircle2, Clock, Target } from 'lucide-react';
 
-// Enum atualizado com todas as categorias relevantes
 export enum GoalCategory {
   Career = 'Carreira',
   Skills = 'Habilidades',
@@ -29,7 +28,6 @@ export interface GoalProps {
   category: GoalCategory;
 }
 
-// Estilos para cada categoria
 const categoryStyles: Record<GoalCategory, { bg: string; text: string }> = {
   [GoalCategory.Career]: {
     bg: 'bg-green-100 dark:bg-green-900/30',

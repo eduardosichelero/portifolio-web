@@ -7,7 +7,7 @@ interface CertificateProps {
   date: string;
   issuer: string;
   progress: number;
-  externalUrl?: string; // Novo campo para o link externo
+  externalUrl?: string; 
 }
 
 export function CertificateCard({ title, date, issuer, progress, externalUrl }: CertificateProps) {

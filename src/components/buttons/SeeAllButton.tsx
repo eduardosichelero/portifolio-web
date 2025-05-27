@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react'; // Importe o ícone
+import { ArrowRight } from 'lucide-react';
 
 interface SeeAllButtonProps {
   to: string;
@@ -16,7 +16,7 @@ export function SeeAllButton({ to, state, children = "Ver todos" }: SeeAllButton
       className="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
     >
       {children}
-      <ArrowRight className="w-4 h-4 ml-1" /> {/* Ícone adicionado */}
+      <ArrowRight className="w-4 h-4 ml-1" /> 
     </Link>
   );
 }
