@@ -4,14 +4,7 @@ import { Calendar, ArrowLeft, Book } from 'lucide-react';
 import { Header } from '../../screens/Header';
 import { AppBackground } from '../AppBackground'; 
 
-const calculateReadingTime = (text) => {
-  const wordsPerMinute = 200;
-  const words = text ? text.trim().split(/\s+/).length : 0;
-  const minutes = Math.ceil(words / wordsPerMinute);
-  return minutes < 1 ? '1 min de leitura' : `${minutes} min de leitura`;
-};
-
-const formatDate = (dateString) => {
+const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: '2-digit',
@@ -35,7 +28,7 @@ export function AllNotionNotes() {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 
     if (!location.state?.notes) {
-      fetch('https://portifolio-api-wmju.onrender.com/api/notion/notes')
+      fetch('https://portifolio-api-mu.vercel.app/api/notion/notes')
         .then(res => res.json())
         .then(data => setNotes(data))
         .finally(() => setLoading(false));
@@ -51,7 +44,7 @@ export function AllNotionNotes() {
   }, []);
 
   useEffect(() => {
-    const handleEsc = (e) => {
+    const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         navigate('/');
       }
@@ -82,46 +75,43 @@ export function AllNotionNotes() {
           ) : notes.length === 0 ? (
             <div className="text-center py-4 text-gray-500">Nenhuma anotação encontrada</div>
           ) : (
-            notes.map((note, index) => {
-              const readingTime = calculateReadingTime(note.texto);
-              return (
-                <a
-                  key={note.id}
-                  href={note.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group cursor-pointer bg-white rounded-xl shadow-md p-6 dark:bg-gray-800 dark:text-gray-100 block transition"
-                >
-                  <div className="flex items-center space-x-2 text-base md:text-lg text-gray-500 dark:text-gray-400 mb-2">
-                    <Calendar className="w-4 h-4" />
-                    <span>{formatDate(note.createdTime)}</span>
-                    <span>•</span>
-                    <span className="flex items-center gap-1">
-                      <Book className="w-4 h-4" />
-                      {readingTime}
+            notes.map((note) => (
+              <a
+                key={note.id}
+                href={note.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group cursor-pointer bg-white rounded-xl shadow-md p-6 dark:bg-gray-800 dark:text-gray-100 block transition"
+              >
+                <div className="flex items-center space-x-2 text-base md:text-lg text-gray-500 dark:text-gray-400 mb-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>{formatDate(note.createdTime)}</span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <Book className="w-4 h-4" />
+                    {note.readingTime || 'Tempo não informado'}
+                  </span>
+                </div>
+                <h4 className="text-xl md:text-2xl font-medium text-gray-900 group-hover:text-indigo-600 transition-colors dark:text-gray-100 dark:group-hover:text-indigo-400 mb-2">
+                  {note.title}
+                </h4>
+                {note.texto && (
+                  <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-3">
+                    {note.texto}
+                  </p>
+                )}
+                <div className="flex flex-wrap gap-2">
+                  {note.tags && note.tags.map((tag, tagIndex) => (
+                    <span
+                      key={tagIndex}
+                      className="px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                    >
+                      {tag}
                     </span>
-                  </div>
-                  <h4 className="text-xl md:text-2xl font-medium text-gray-900 group-hover:text-indigo-600 transition-colors dark:text-gray-100 dark:group-hover:text-indigo-400 mb-2">
-                    {note.title}
-                  </h4>
-                  {note.texto && (
-                    <p className="text-base md:text-lg text-gray-600 dark:text-gray-300 mb-3">
-                      {note.texto}
-                    </p>
-                  )}
-                  <div className="flex flex-wrap gap-2">
-                    {note.tags && note.tags.map((tag, tagIndex) => (
-                      <span
-                        key={tagIndex}
-                        className="px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </a>
-              );
-            })
+                  ))}
+                </div>
+              </a>
+            ))
           )}
         </div>
       </main>
