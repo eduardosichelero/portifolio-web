@@ -27,6 +27,7 @@ const AllCertificates = lazy(() => import('@/screens/AllCertificates'));
 const NotFound = lazy(() => import('@/screens/NotFound'));
 const AllGoals = lazy(() => import('@/screens/AllGoals'));
 const AllNotionNotes = lazy(() => import('@/components/data/AllNotionNotes'));
+const AdminPanel = lazy(() => import('@/screens/AdminPanel'));
 
 function App() {
   const [modalState, setModalState] = useState({ type: null, isOpen: false });
@@ -110,6 +111,7 @@ function App() {
               <Route path="/goals" element={<AllGoals />} />
               <Route path="/certificates" element={<AllCertificates />} />
               <Route path="/notes" element={<AllNotionNotes />} />
+              <Route path="/admin" element={<AdminPanel />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
