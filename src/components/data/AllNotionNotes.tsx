@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Calendar, ArrowLeft, Book } from 'lucide-react';
-import { Header } from '../../screens/Header';
-import { AppBackground } from '../AppBackground'; 
+import { Header } from '@/screens/Header';
+import { AppBackground } from '@/components/layout/AppBackground';
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('pt-BR', {

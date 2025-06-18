@@ -1,44 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy, useMemo, useCallback } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { GoalCard } from './components/cardsModals/GoalCard';
-import { SkillsRadar } from './components/cardsModals/SkillsRadar';
-import { ProfileSection } from './components/about me/ProfileSection';
-import { Modal } from './components/cardsModals/Modal';
-import { ProjectsContent } from './components/cardsModals/ProjectsModal';
-import { PublicationsContent } from './components/cardsModals/PublicationsModal';
-import { UsefulLinks } from './components/links/UsefulLinks';
-import { SocialLinks } from './components/links/SocialLinks';
-import { AboutMeCard } from './components/about me/AboutMeCard';
-import { WorkExperienceSection } from './components/about me/WorkExperienceSection';
-import { CertificateCard } from './components/about me/CertificateCard';
-import { Footer } from './screens/Footer';
-import { Header } from './screens/Header';
-import { AllCertificates } from './screens/AllCertificates';
-import { AllBlogPosts } from './screens/AllBlogPosts';
-import NotFound from './screens/NotFound';
-import { StatsOverview } from './components/useful/StatsOverview';
-import { SectionList } from './components/useful/SectionList';
-import { RightColumn } from './components/layout/RightColumn';
-import { MainGrid } from './components/layout/MainGrid';
-import { BlogPosts } from './components/posts/BlogPosts';
-import { goals, certificates } from './components/data/ActiveInfoProvider';
-import { NotionNotes } from './components/data/NotionNotes';
-import { AllNotionNotes } from './components/data/AllNotionNotes';
-import { AppBackground } from './components/AppBackground';
-import { allGoalsData } from './components/data/goalsData';
-import { AllGoals } from './screens/AllGoals';
+import { BackgroundLines } from '@/components/ui/background-lines';
+import { AppBackground } from '@/components/layout/AppBackground';
+import { Header } from '@/screens/Header';
+import { Footer } from '@/screens/Footer';
+import { MainGrid } from '@/components/layout/MainGrid';
+import { ProfileSection } from '@/components/features/about/ProfileSection';
+import { AboutMeCard } from '@/components/features/about/AboutMeCard';
+import { WorkExperienceSection } from '@/components/features/about/WorkExperienceSection';
+import { StatsOverview } from '@/components/features/goals/StatsOverview';
+import { SectionList } from '@/components/features/goals/SectionList';
+import { GoalCard } from '@/components/features/goals/GoalCard';
+import { CertificateCard } from '@/components/features/certificates/CertificateCard';
+import { SkillsRadar } from '@/components/features/about/SkillsRadar';
+import { UsefulLinks } from '@/components/links/UsefulLinks';
+import { SocialLinks } from '@/components/links/SocialLinks';
+import { RightColumn } from '@/components/layout/RightColumn';
+import { NotionNotes } from '@/components/data/NotionNotes';
+import { Modal } from '@/components/common/Modal';
+import { ProjectsContent } from '@/components/common/ProjectsModal';
+import { PublicationsContent } from '@/components/common/PublicationsModal';
+import { certificates } from '@/components/data/ActiveInfoProvider';
+import { allGoalsData } from '@/components/data/goalsData';
+
+const AllCertificates = lazy(() => import('@/screens/AllCertificates'));
+const NotFound = lazy(() => import('@/screens/NotFound'));
+const AllGoals = lazy(() => import('@/screens/AllGoals'));
+const AllNotionNotes = lazy(() => import('@/components/data/AllNotionNotes'));
 
 function App() {
   const [modalState, setModalState] = useState({ type: null, isOpen: false });
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Para o dashboard, mostre apenas os 4 primeiros:
-  const previewGoals = allGoalsData.slice(0, 4);
-  const totalGoals = allGoalsData.length;
-  const completedGoals = allGoalsData.filter(goal => goal.progress === 100).length;
-  const completionRate = totalGoals > 0 
-    ? Math.round((completedGoals / totalGoals) * 100)
-    : 0;
+  const previewGoals = useMemo(() => allGoalsData.slice(0, 4), []);
+  const totalGoals = useMemo(() => allGoalsData.length, []);
+  const completedGoals = useMemo(() => allGoalsData.filter((goal: any) => goal.progress === 100).length, []);
+  const completionRate = useMemo(() => totalGoals > 0 ? Math.round((completedGoals / totalGoals) * 100) : 0, [totalGoals, completedGoals]);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -57,78 +54,78 @@ function App() {
     }
   }, [isDarkMode]);
 
+  const closeModal = useCallback(() => setModalState({ type: null, isOpen: false }), []);
+
   return (
     <AppBackground isDarkMode={isDarkMode}>
-      <Header />
-
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-              <ProfileSection />
-              <AboutMeCard />
-              <WorkExperienceSection />
-
-              <StatsOverview 
-                totalGoals={totalGoals}
-                completedGoals={completedGoals}
-                completionRate={completionRate}
-              />
-
-              <MainGrid
-                left={
-                  <>
-                    <SectionList
-                      title="Objetivos do momento"
-                      items={previewGoals} // apenas 4!
-                      Card={GoalCard}
-                      seeAllTo="/goals"
-                      seeAllState={{}} // não precisa passar goals via state
+      <BackgroundLines className="fixed inset-0 w-full h-full z-0 pointer-events-none" />
+      <div className="relative min-h-screen flex flex-col z-10">
+        <Header />
+        <main className="flex-1">
+          <Suspense fallback={<div className="flex items-center justify-center h-40 text-lg text-gray-500">Carregando...</div>}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <ProfileSection />
+                    <AboutMeCard />
+                    <WorkExperienceSection />
+                    <StatsOverview 
+                      totalGoals={totalGoals}
+                      completedGoals={completedGoals}
+                      completionRate={completionRate}
                     />
-                    <SectionList
-                      title="Minhas Certificações"
-                      items={certificates}
-                      Card={CertificateCard}
-                      seeAllTo="/certificates"
-                      seeAllState={{ certificates }}
+                    <MainGrid
+                      left={
+                        <>
+                          <SectionList
+                            title="Objetivos do momento"
+                            items={previewGoals}
+                            Card={GoalCard}
+                            seeAllTo="/goals"
+                            seeAllState={{}}
+                          />
+                          <SectionList
+                            title="Minhas Certificações"
+                            items={certificates}
+                            Card={CertificateCard}
+                            seeAllTo="/certificates"
+                            seeAllState={{ certificates }}
+                          />
+                          <NotionNotes />
+                        </>
+                      }
+                      right={
+                        <RightColumn>
+                          <SkillsRadar />
+                          <UsefulLinks />
+                          <SocialLinks />
+                        </RightColumn>
+                      }
                     />
-                    <NotionNotes />
-                  </>
-                }
-                right={
-                  <RightColumn>
-                    <SkillsRadar />
-                    <UsefulLinks />
-                    <SocialLinks />
-                  </RightColumn>
+                  </main>
                 }
               />
-            </main>
-          }
-        />
-
-        <Route path="/goals" element={<AllGoals />} />
-        <Route path="/certificates" element={<AllCertificates />} />
-        <Route path="/blog" element={<AllBlogPosts />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/notes" element={<AllNotionNotes />} />
-      </Routes>
-
-      <Footer />
-
-      {/* Modals */}
+              <Route path="/goals" element={<AllGoals />} />
+              <Route path="/certificates" element={<AllCertificates />} />
+              <Route path="/notes" element={<AllNotionNotes />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+        </main>
+        <Footer />
+      </div>
       <Modal
         isOpen={modalState.isOpen && modalState.type === 'projects'}
-        onClose={() => setModalState({ type: null, isOpen: false })}
+        onClose={closeModal}
         title="Projects Portfolio"
       >
         <ProjectsContent />
       </Modal>
-
       <Modal
         isOpen={modalState.isOpen && modalState.type === 'publications'}
-        onClose={() => setModalState({ type: null, isOpen: false })}
+        onClose={closeModal}
         title="Academic Publications"
       >
         <PublicationsContent />

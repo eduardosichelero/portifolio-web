@@ -40,7 +40,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }
       onClick={onClose}
     >
       <div
-        className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-lg mx-2 p-0 animate-fade-in"
+        className="relative bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-2xl mx-2 p-0 animate-fade-in"
         onClick={e => e.stopPropagation()}
         ref={modalRef}
         tabIndex={0}
@@ -57,7 +57,7 @@ export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children }
           </button>
         </div>
         {/* Conteúdo */}
-        <div className="p-6 overflow-y-auto max-h-[70vh]">
+        <div className="p-6">
           {children}
         </div>
       </div>

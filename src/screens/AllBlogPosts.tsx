@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import { Calendar, ArrowLeft } from 'lucide-react';
-import { Header } from './Header';
+import { Header } from '@/screens/Header';
+import { BackgroundLines } from '@/components/ui/background-lines';
 
 interface BlogPost {
   title: string;
@@ -55,7 +56,8 @@ export function AllBlogPosts() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background-light dark:bg-gray-900">
+    <div className="relative min-h-screen bg-background-light dark:bg-gray-900">
+      <BackgroundLines />
       <Header />
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">

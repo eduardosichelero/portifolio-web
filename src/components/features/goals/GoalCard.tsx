@@ -97,17 +97,18 @@ const categoryStyles: Record<GoalCategory, { bg: string; text: string }> = {
 
 export function GoalCard({ title, deadline, progress, category }: GoalProps) {
   useEffect(() => {
-    const sr = ScrollReveal();
-    sr.reveal('.goal-card', {
-      distance: '50px',
-      duration: 1000,
-      easing: 'ease-out',
-      origin: 'bottom',
-      delay: 300,
-      reset: true,
-    });
-
-    return () => sr.destroy();
+    if (typeof window !== "undefined" && ScrollReveal) {
+      const sr = ScrollReveal();
+      sr.reveal('.goal-card', {
+        distance: '50px',
+        duration: 1000,
+        easing: 'ease-out',
+        origin: 'bottom',
+        delay: 300,
+        reset: true,
+      });
+      return () => sr.destroy();
+    }
   }, []);
 
   const { bg, text } = categoryStyles[category];

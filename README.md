@@ -6,7 +6,6 @@ Projeto de portfólio pessoal desenvolvido com **React + Vite**, exibindo dados 
 
 ## 📸 Screenshots
 
->
 ![Página Inicial](./src/images/homePage.png)
 ![Exemplo de Nota](./src/images/notionNotes.png)
 
@@ -70,7 +69,11 @@ Em seguida, inicie o projeto:
 npm run dev
 ```
 
-O projeto estará disponível em [http://localhost:5173](http://localhost:5173)
+> ⚠️ **Atenção:**
+> Se o projeto estiver com o base configurado como `/portifolio-web/` (padrão para deploy em subpasta/GitHub Pages), acesse localmente em:
+> [http://localhost:5173/portifolio-web/](http://localhost:5173/portifolio-web/)
+>
+> Se quiser rodar na raiz (`/`), altere o `base` em `vite.config.ts` para `'/'` e o `basename` do `BrowserRouter` para `'/'` em `main.tsx`.
 
 ---
 
@@ -131,7 +134,8 @@ VITE_API_URL=https://portifolio-api-mu.vercel.app
 
 * **404 após deploy no GitHub Pages:**
   Certifique-se de que o `base` no `vite.config.ts` e o `homepage` no `package.json` estão corretos.
-
+* **Acesso local:**
+  Se acessar localmente, use a URL com `/portifolio-web/` ou ajuste o `base` para `/`.
 * **Notas com título "Sem título":**
   Isso ocorre quando o campo de título não está definido no Notion ou o nome do campo foi alterado.
 

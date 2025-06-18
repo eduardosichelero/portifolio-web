@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ScrollReveal from 'scrollreveal';
 import { BookOpen, Shield, Code, GraduationCap } from 'lucide-react';
-import { Modal } from '../cardsModals/Modal'; 
-import { ProjectsContent } from '../cardsModals/ProjectsModal';
-import { PublicationsContent } from '../cardsModals/PublicationsModal';
+import { Modal } from '@/components/common/Modal';
+import { ProjectsContent } from '@/components/common/ProjectsModal';
+import { PublicationsContent } from '@/components/common/PublicationsModal';
 
 export function ProfileSection() {
   const [modalState, setModalState] = useState<{ type: string | null; isOpen: boolean }>({

@@ -1,29 +1,49 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { GoalCard } from '../components/cardsModals/GoalCard';
-import { Header } from '../screens/Header';
+import { GoalCard } from '@/components/features/goals/GoalCard';
+import { Header } from '@/screens/Header';
 import { ArrowLeft } from 'lucide-react';
-import { AppBackground } from '../components/AppBackground';
-import { allGoalsData, Goal } from '../components/data/goalsData';
+import { allGoalsData } from '@/components/data/goalsData';
+import { GoalCategory, GoalProps } from '../components/features/goals/GoalCard';
+
+interface RawGoal {
+  title: string;
+  deadline: string;
+  progress: number;
+  category: string;
+}
+
+const GoalCategoryMap: Record<string, GoalCategory> = {
+  'Estudos': GoalCategory.Education,
+  'Hands-on': GoalCategory.HandsOn,
+  'Redes': GoalCategory.Networks,
+  'Monitoramento': GoalCategory.Monitoring,
+  'Infraestrutura': GoalCategory.Infra,
+  'Certificação': GoalCategory.Cert,
+  'Programação': GoalCategory.Programming,
+  'Sistemas Operacionais': GoalCategory.Systems,
+  'Blue Team': GoalCategory.BlueTeam,
+  'Desenvolvimento Seguro': GoalCategory.DevSecOps,
+  'Prática/Comunidade': GoalCategory.Community,
+  'Especialização': GoalCategory.Specialization,
+  'Infraestrutura Crítica': GoalCategory.CriticalInfra,
+};
 
 export function AllGoals() {
   const navigate = useNavigate();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const allGoalsDataMapped: GoalProps[] = useMemo(() => (
+    (allGoalsData as RawGoal[]).map((goal) => {
+      const mappedCategory = GoalCategoryMap[goal.category] || GoalCategory.Education;
+      return {
+        ...goal,
+        category: mappedCategory
+      };
+    })
+  ), []);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-    setIsDarkMode(
-      localStorage.getItem('theme') === 'dark' ||
-      window.matchMedia('(prefers-color-scheme: dark)').matches
-    );
-  }, []);
-
-  useEffect(() => {
-    const handler = () => {
-      setIsDarkMode(document.documentElement.classList.contains('dark'));
-    };
-    window.addEventListener('storage', handler);
-    return () => window.removeEventListener('storage', handler);
   }, []);
 
   useEffect(() => {
@@ -35,13 +55,12 @@ export function AllGoals() {
   }, [navigate]);
 
   return (
-    <AppBackground isDarkMode={isDarkMode}>
+    <div className="relative min-h-screen flex flex-col">
       <Header />
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 flex-1">
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
           Todos os Objetivos
         </h2>
-        
         <div className="mb-8">
           <Link
             to="/"
@@ -51,16 +70,19 @@ export function AllGoals() {
             Voltar para o Dashboard
           </Link>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allGoalsData.map((goal: Goal, index: number) => (
-            <GoalCard 
-              key={goal.title + index}
-              {...goal}
-            />
-          ))}
+          {allGoalsDataMapped.length === 0 ? (
+            <p className="text-gray-500 col-span-full">Nenhum objetivo encontrado.</p>
+          ) : (
+            allGoalsDataMapped.map((goal, index) => {
+              const key = `${String(goal.title)}-${index}`;
+              return <GoalCard key={key} {...goal} />;
+            })
+          )}
         </div>
       </main>
-    </AppBackground>
+    </div>
   );
 }
+
+export default AllGoals;

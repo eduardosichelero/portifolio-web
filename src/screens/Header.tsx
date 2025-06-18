@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import {
   Layout,
   Menu,
@@ -11,7 +11,7 @@ import {
   BookOpen,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { DarkModeToggle } from "../components/useful/DarkModeToggle";
+import { DarkModeToggle } from "@/components/ui/DarkModeToggle";
 
 export function Header({ goals }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -20,51 +20,52 @@ export function Header({ goals }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch Notion notes
+  const apiUrl = useMemo(
+    () => import.meta.env.VITE_API_URL || "https://portifolio-api-mu.vercel.app",
+    []
+  );
+
   useEffect(() => {
-    // We'll only fetch when needed to avoid unnecessary API calls
     const fetchNotes = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://portifolio-api-mu.vercel.app'}/api/notion/notes`);
-        if (!response.ok) throw new Error('Failed to fetch notes');
+        const response = await fetch(`${apiUrl}/api/notion/notes`);
+        if (!response.ok) throw new Error("Failed to fetch notes");
         const data = await response.json();
         setNotes(data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching notes:', error);
+        console.error("Error fetching notes:", error);
         setLoading(false);
       }
     };
-    
-    // Prefetch notes so they're ready when needed
     fetchNotes();
-  }, []);
+  }, [apiUrl]);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
-
-    // Fecha o menu ao pressionar ESC
-    const handleEsc = (e) => {
+    const handleEsc = (e: KeyboardEvent) => {
       if (e.key === "Escape") setMenuOpen(false);
     };
     document.addEventListener("keydown", handleEsc);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("keydown", handleEsc);
     };
   }, []);
 
-  // Fecha o menu ao navegar
-  const handleNav = () => setMenuOpen(false);
+  const handleNav = useCallback(() => setMenuOpen(false), []);
 
-  // Navigate to notes with data
-  const navigateToNotes = () => {
-    handleNav(); // Close menu
+  const navigateToNotes = useCallback(() => {
+    handleNav();
     navigate("/notes", { state: { notes } });
-  };
+  }, [navigate, notes, handleNav]);
+
+  const handleHome = useCallback(() => {
+    handleNav();
+    navigate("/");
+  }, [navigate, handleNav]);
 
   return (
     <header
@@ -73,15 +74,18 @@ export function Header({ goals }) {
       } mb-8 dark:bg-gray-800`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-        {/* Logo e Título */}
-        <div className="flex items-center space-x-3">
+        <div
+          className="flex items-center space-x-3 cursor-pointer"
+          onClick={handleHome}
+          tabIndex={0}
+          role="button"
+          aria-label="Ir para a Home"
+        >
           <Layout className="w-8 h-8 text-indigo-600 dark:text-indigo-400" />
           <h1 className="text-xl font-bold text-gray-900 dark:text-gray-100">
             Eduardo Sichelero
           </h1>
         </div>
-
-        {/* Botões do lado direito */}
         <div className="flex items-center space-x-2">
           <button
             className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400"
@@ -96,8 +100,6 @@ export function Header({ goals }) {
           </button>
           <DarkModeToggle />
         </div>
-
-        {/* Menu lateral */}
         <nav
           className={`fixed top-0 right-0 h-full w-72 max-w-full bg-white dark:bg-gray-900 shadow-lg z-50 transform transition-transform duration-300 ${
             menuOpen ? "translate-x-0" : "translate-x-full"
@@ -119,7 +121,7 @@ export function Header({ goals }) {
           <ul className="flex-1 flex flex-col gap-2 px-6 py-6">
             <li>
               <a
-                href="/curriculo-eduardo-sichelero.pdf"
+                href="curriculo-eduardo-sichelero.pdf"
                 download
                 className="flex items-center px-3 py-2 rounded-md hover:bg-indigo-50 dark:hover:bg-indigo-800 transition"
                 title="Baixar Currículo em PDF"
@@ -197,8 +199,6 @@ export function Header({ goals }) {
             </li>
           </ul>
         </nav>
-
-        {/* Overlay para fechar o menu ao clicar fora */}
         {menuOpen && (
           <div
             className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"

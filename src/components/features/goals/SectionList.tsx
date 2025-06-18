@@ -1,5 +1,5 @@
 import React from 'react';
-import { SeeAllButton } from '../buttons/SeeAllButton';
+import { SeeAllButton } from '@/components/buttons/SeeAllButton';
 
 interface SectionListProps<T> {
   title: string;

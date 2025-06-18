@@ -1,79 +1,81 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import { CertificateCard } from '../components/about me/CertificateCard';
-import { Header } from './Header';
+import { CertificateCard } from '@/components/features/certificates/CertificateCard';
+import { Header } from '@/screens/Header';
 import { ArrowLeft } from 'lucide-react';
-import { AppBackground } from '../components/AppBackground';
+import { AppBackground } from '@/components/layout/AppBackground';
 
 export function AllCertificates() {
   const location = useLocation();
   const navigate = useNavigate();
-  const certificatesFromDashboard = location.state?.certificates || [];
 
-  // Certificações completas - adicionei todas as que aparecem na segunda imagem
-  const extraCertificates = [
-    {
-      title: 'AWS Certified Solutions Architect',
-      date: '10 de outubro de 2024',
-      issuer: 'Amazon',
-      progress: 100,
-      externalUrl: 'https://www.credly.com/badges/exemplo-aws'
-    },
-    {
-      title: 'Microsoft Azure Fundamentals',
-      date: 'em andamento',
-      issuer: 'Microsoft',
-      progress: 30,
-      externalUrl: 'https://learn.microsoft.com/pt-br/certifications/exemplo-azure'
-    },
-    {
-      title: 'Linux Professional Institute LPIC-1',
-      date: 'em andamento',
-      issuer: 'LPI',
-      progress: 50,
-      externalUrl: 'https://www.lpi.org/pt-br/our-certifications/exemplo-lpic'
-    },
-    {
-      title: 'Google Cybersecurity Professional',
-      date: 'em andamento',
-      issuer: 'Google',
-      progress: 40,
-      externalUrl: 'https://www.coursera.org/professional-certificates/google-cybersecurity'
-    },
-    {
-      title: 'One Oracle Next Education T6',
-      date: '16 de julho de 2024',
-      issuer: 'Oracle',
-      progress: 100,
-      externalUrl: 'https://www.oracle.com/br/education/oracle-next-education/'
-    },
-    {
-      title: 'Introduction to Generative AI',
-      date: '07 de dezembro de 2023',
-      issuer: 'Google',
-      progress: 100,
-      externalUrl: 'https://cloud.google.com/training/generative-ai'
-    },
-    {
-      title: 'Advent of Cyber 2024',
-      date: 'em andamento',
-      issuer: 'TryHackMe',
-      progress: 68,
-      externalUrl: 'https://tryhackme.com/christmas'
-    },
-  ];
+  const certificatesFromDashboard = useMemo(() => location.state?.certificates || [], [location.state]);
 
-  // Garante que não haverá duplicação de certificados
-  const allCertificates = [...certificatesFromDashboard];
-  
-  // Adiciona apenas certificados extras que não existem no dashboard
-  extraCertificates.forEach(extra => {
-    if (!allCertificates.some(cert => cert.title === extra.title)) {
-      allCertificates.push(extra);
-    }
-  });
+  const extraCertificates = useMemo(
+    () => [
+      {
+        title: 'AWS Certified Solutions Architect',
+        date: '10 de outubro de 2024',
+        issuer: 'Amazon',
+        progress: 100,
+        externalUrl: 'https://www.credly.com/badges/exemplo-aws'
+      },
+      {
+        title: 'Microsoft Azure Fundamentals',
+        date: 'em andamento',
+        issuer: 'Microsoft',
+        progress: 30,
+        externalUrl: 'https://learn.microsoft.com/pt-br/certifications/exemplo-azure'
+      },
+      {
+        title: 'Linux Professional Institute LPIC-1',
+        date: 'em andamento',
+        issuer: 'LPI',
+        progress: 50,
+        externalUrl: 'https://www.lpi.org/pt-br/our-certifications/exemplo-lpic'
+      },
+      {
+        title: 'Google Cybersecurity Professional',
+        date: 'em andamento',
+        issuer: 'Google',
+        progress: 40,
+        externalUrl: 'https://www.coursera.org/professional-certificates/google-cybersecurity'
+      },
+      {
+        title: 'One Oracle Next Education T6',
+        date: '16 de julho de 2024',
+        issuer: 'Oracle',
+        progress: 100,
+        externalUrl: 'https://www.oracle.com/br/education/oracle-next-education/'
+      },
+      {
+        title: 'Introduction to Generative AI',
+        date: '07 de dezembro de 2023',
+        issuer: 'Google',
+        progress: 100,
+        externalUrl: 'https://cloud.google.com/training/generative-ai'
+      },
+      {
+        title: 'Advent of Cyber 2024',
+        date: 'em andamento',
+        issuer: 'TryHackMe',
+        progress: 68,
+        externalUrl: 'https://tryhackme.com/christmas'
+      },
+    ],
+    []
+  );
 
-  // Detecta tema escuro (ajuste conforme seu contexto de tema)
+  const allCertificates = useMemo(() => {
+    const merged = [...certificatesFromDashboard];
+    extraCertificates.forEach(extra => {
+      if (!merged.some(cert => cert.title === extra.title)) {
+        merged.push(extra);
+      }
+    });
+    return merged;
+  }, [certificatesFromDashboard, extraCertificates]);
+
   const [isDarkMode, setIsDarkMode] = useState(
     () =>
       localStorage.getItem('theme') === 'dark' ||
@@ -82,8 +84,6 @@ export function AllCertificates() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-
-    // Atualiza o estado se o tema mudar em outro local
     const handler = () => {
       setIsDarkMode(document.documentElement.classList.contains('dark'));
     };
@@ -91,9 +91,8 @@ export function AllCertificates() {
     return () => window.removeEventListener('storage', handler);
   }, []);
 
-  // ESC para voltar para a tela inicial
   useEffect(() => {
-    const handleEsc = (e) => {
+    const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         navigate('/');
       }
@@ -109,8 +108,6 @@ export function AllCertificates() {
         <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6">
           Todas as Certificações
         </h2>
-        
-        {/* Botão de retorno */}
         <div className="mb-8">
           <Link
             to="/"
@@ -120,8 +117,6 @@ export function AllCertificates() {
             Voltar para o Dashboard
           </Link>
         </div>
-
-        {/* Grid de certificações */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {allCertificates.map((certificate, index) => (
             <CertificateCard 
@@ -134,3 +129,5 @@ export function AllCertificates() {
     </AppBackground>
   );
 }
+
+export default AllCertificates;
