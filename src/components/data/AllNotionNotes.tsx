@@ -118,3 +118,5 @@ export function AllNotionNotes() {
     </AppBackground>
   );
 }
+
+export default AllNotionNotes;
