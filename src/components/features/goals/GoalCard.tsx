@@ -13,7 +13,7 @@ export enum GoalCategory {
   Cert = 'Certificação',
   Programming = 'Programação',
   Networks = 'Redes',
-  BlueTeam = 'Blue Team',
+  BlueTeam = 'Desenvolvimento Seguro',
   DevSecOps = 'Desenvolvimento Seguro',
   Community = 'Prática/Comunidade',
   Specialization = 'Especialização',
@@ -101,7 +101,7 @@ export function GoalCard({ title, deadline, progress, category }: GoalProps) {
       const sr = ScrollReveal();
       sr.reveal('.goal-card', {
         distance: '50px',
-        duration: 1000,
+        duration: 600, // ajustado para 600ms
         easing: 'ease-out',
         origin: 'bottom',
         delay: 300,

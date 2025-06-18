@@ -8,10 +8,10 @@ export function AboutMeCard() {
   useEffect(() => {
     ScrollReveal().reveal('.about-me-card', {
       distance: '50px',
-      duration: 1000,
+      duration: 600,
       easing: 'ease-out',
       origin: 'bottom',
-      delay: 500,
+      delay: 600,
       reset: true,
     });
   }, []);

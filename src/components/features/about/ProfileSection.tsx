@@ -14,10 +14,10 @@ export function ProfileSection() {
   useEffect(() => {
     ScrollReveal().reveal('.profile-section', {
       distance: '50px',
-      duration: 1000,
+      duration: 600,
       easing: 'ease-out',
       origin: 'top',
-      delay: 500,
+      delay: 600,
       reset: true, 
     });
   }, []);

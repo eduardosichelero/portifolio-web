@@ -14,10 +14,10 @@ export function CertificateCard({ title, date, issuer, progress, externalUrl }: 
   useEffect(() => {
     ScrollReveal().reveal('.certificate-card', {
       distance: '50px',
-      duration: 1000,
+      duration: 600,
       easing: 'ease-out',
       origin: 'bottom',
-      delay: 300,
+      delay: 600,
       reset: true, 
     });
   }, []);

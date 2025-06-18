@@ -51,7 +51,7 @@ export function WorkExperienceSection() {
   useEffect(() => {
     ScrollReveal().reveal('.work-experience-section', {
       distance: '50px',
-      duration: 1000,
+      duration: 700,
       easing: 'ease-out',
       origin: 'bottom',
       delay: 500,

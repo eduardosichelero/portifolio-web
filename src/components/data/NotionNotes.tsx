@@ -9,16 +9,14 @@ export function NotionNotes() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const sr = ScrollReveal();
-    sr.reveal('.notion-notes-container', {
+    ScrollReveal().reveal('.notion-notes-container', {
       distance: '50px',
-      duration: 1000,
+      duration: 600, // ajustado para 600ms
       easing: 'ease-out',
       origin: 'bottom',
       delay: 200,
       reset: true,
     });
-    return () => sr.destroy();
   }, []);
 
   useEffect(() => {

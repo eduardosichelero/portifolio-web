@@ -19,7 +19,7 @@ export function SkillsRadar() {
   useEffect(() => {
     const scrollRevealInstance = ScrollReveal({
       distance: '50px',
-      duration: 1300, 
+      duration: 600, // ajustado para 600ms
       easing: 'ease-out',
       origin: 'bottom',
       delay: 600,

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import ScrollReveal from 'scrollreveal';
 import { Trophy, Target, CheckCircle2 } from 'lucide-react';
 
 interface StatsOverviewProps {
@@ -12,6 +13,18 @@ export function StatsOverview({
   completedGoals,
   completionRate 
 }: StatsOverviewProps) {
+  useEffect(() => {
+    ScrollReveal().reveal('.stats-overview-card', {
+      distance: '50px',
+      duration: 600, // padrão do portfólio
+      easing: 'ease-out',
+      origin: 'bottom',
+      delay: 200,
+      reset: true,
+      interval: 200, // animação em cascata
+    });
+  }, []);
+
   const stats = [
     {
       label: "Meus Objetivos",
@@ -36,7 +49,7 @@ export function StatsOverview({
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       {stats.map((stat, idx) => (
-        <div key={idx} className={`bg-white rounded-xl shadow-md p-6 dark:bg-gray-800`}>
+        <div key={idx} className={`stats-overview-card bg-white rounded-xl shadow-md p-6 dark:bg-gray-800`}>
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-300">{stat.label}</p>

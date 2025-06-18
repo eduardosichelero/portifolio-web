@@ -52,7 +52,7 @@ export function UsefulLinks() {
   useEffect(() => {
     ScrollReveal().reveal('.useful-links-container', {
       distance: '50px',
-      duration: 1000, 
+      duration: 600, 
       easing: 'ease-out',
       origin: 'bottom',
       delay: 200,
