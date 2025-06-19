@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoalCard } from '@/components/features/goals/GoalCard';
 import { Header } from '@/screens/Header';
 import { ArrowLeft } from 'lucide-react';
-import { allGoalsData } from '@/components/data/goalsData';
 import { GoalCategory, GoalProps } from '../components/features/goals/GoalCard';
 
 interface RawGoal {
@@ -31,16 +30,31 @@ const GoalCategoryMap: Record<string, GoalCategory> = {
 
 export function AllGoals() {
   const navigate = useNavigate();
+  const [goals, setGoals] = useState<RawGoal[]>([]);
+  const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  fetch('https://portifolio-api-mu.vercel.app/api/goals')
+    .then(r => r.json())
+    .then(data => {
+      setGoals(Array.isArray(data) ? data : []);
+      setLoading(false);
+    })
+    .catch(() => {
+      setGoals([]);
+      setLoading(false);
+    });
+}, []);
 
   const allGoalsDataMapped: GoalProps[] = useMemo(() => (
-    (allGoalsData as RawGoal[]).map((goal) => {
+    goals.map((goal) => {
       const mappedCategory = GoalCategoryMap[goal.category] || GoalCategory.Education;
       return {
         ...goal,
         category: mappedCategory
       };
     })
-  ), []);
+  ), [goals]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
@@ -71,7 +85,9 @@ export function AllGoals() {
           </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {allGoalsDataMapped.length === 0 ? (
+          {loading ? (
+            <p className="text-gray-500 col-span-full">Carregando...</p>
+          ) : allGoalsDataMapped.length === 0 ? (
             <p className="text-gray-500 col-span-full">Nenhum objetivo encontrado.</p>
           ) : (
             allGoalsDataMapped.map((goal, index) => {

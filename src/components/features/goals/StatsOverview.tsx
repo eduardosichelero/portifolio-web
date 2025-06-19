@@ -1,48 +1,46 @@
 import React, { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
 import { Trophy, Target, CheckCircle2 } from 'lucide-react';
+import { useApiGoals } from '@/components/data/ActiveInfoProvider';
 
-interface StatsOverviewProps {
-  totalGoals: number;
-  completedGoals: number;
-  completionRate: number;
-}
+export function StatsOverview() {
+  // Buscar todos os objetivos, não apenas os 4 primeiros
+  const { goals, loading } = useApiGoals({ all: true });
 
-export function StatsOverview({ 
-  totalGoals,
-  completedGoals,
-  completionRate 
-}: StatsOverviewProps) {
+  const totalGoals = goals.length;
+  const completedGoals = goals.filter((goal: { progress: number }) => goal.progress === 100).length;
+  const completionRate = totalGoals > 0 ? Math.round((completedGoals / totalGoals) * 100) : 0;
+
   useEffect(() => {
     ScrollReveal().reveal('.stats-overview-card', {
       distance: '50px',
-      duration: 600, // padrão do portfólio
+      duration: 600,
       easing: 'ease-out',
       origin: 'bottom',
       delay: 200,
       reset: true,
-      interval: 200, // animação em cascata
+      interval: 200,
     });
   }, []);
 
   const stats = [
     {
-      label: "Meus Objetivos",
-      value: totalGoals,
+      label: 'Meus Objetivos',
+      value: loading ? '-' : totalGoals,
       icon: <Target className="w-6 h-6 text-blue-600" />,
-      bg: "bg-blue-50",
+      bg: 'bg-blue-50',
     },
     {
-      label: "Completos",
-      value: completedGoals,
+      label: 'Completos',
+      value: loading ? '-' : completedGoals,
       icon: <Trophy className="w-6 h-6 text-green-600" />,
-      bg: "bg-green-50",
+      bg: 'bg-green-50',
     },
     {
-      label: "Como estou indo",
-      value: `${Math.round(completionRate)}%`,
+      label: 'Como estou indo',
+      value: loading ? '-' : `${completionRate}%`,
       icon: <CheckCircle2 className="w-6 h-6 text-purple-600" />,
-      bg: "bg-purple-50",
+      bg: 'bg-purple-50',
     },
   ];
 

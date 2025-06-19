@@ -1,57 +1,57 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-export const goals = [
-  {
-    title: 'Learn Advanced React Patterns',
-    deadline: '30 de junho de 2024',
-    progress: 100,
-    category: 'Habilidades',
-  },
-  {
-    title: 'Completar Certificação AWS',
-    deadline: '15 de agosto de 2024',
-    progress: 40,
-    category: 'Carreira',
-  },
-  {
-    title: 'Construir Projetos de Portfólio',
-    deadline: '1 de julho de 2024',
-    progress: 80,
-    category: 'Pessoal',
-  },
-  {
-    title: 'Advent of Cyber 2024',
-    deadline: 'Atualmente em curso',
-    progress: 68,
-    category: 'Pessoal',
-  },
-];
+// Definir tipos para os dados de objetivos e certificados
+export interface Goal {
+  id: string;
+  title: string;
+  progress: number;
+  // adicione outros campos conforme necessário
+}
 
-export const certificates = [
-  {
-    title: 'Google Cybersecurity Professional',
-    date: 'em andamento',
-    issuer: 'Google',
-    progress: 40,
-  },
-  {
-    title: 'One Oracle Next Education T6',
-    date: '16 de julho de 2024',
-    issuer: 'Oracle',
-    progress: 100,
-    externalUrl: 'https://exemplo.com/oracle-next-education-t6'
-  },
-  {
-    title: 'Introduction to Generative AI',
-    date: '07 de dezembro de 2023',
-    issuer: 'Google',
-    progress: 100,
-    externalUrl: 'https://exemplo.com/generative-ai'
-  },
-  {
-    title: 'Advent of Cyber 2024',
-    date: 'em andamento',
-    issuer: 'TryHackMe',
-    progress: 68,
-  },
-];
+export interface Certificate {
+  id: string;
+  title: string;
+  // adicione outros campos conforme necessário
+}
+
+export const useApiGoals = (options?: { all?: boolean }) => {
+  const [goals, setGoals] = useState<Goal[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('https://portifolio-api-mu.vercel.app/api/goals')
+      .then(r => r.json())
+      .then(data => {
+        setGoals(Array.isArray(data)
+          ? (options?.all ? data : data.slice(0, 4))
+          : []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setGoals([]);
+        setLoading(false);
+      });
+  }, [options?.all]);
+
+  return { goals, loading };
+};
+
+export const useApiCertificates = () => {
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('https://portifolio-api-mu.vercel.app/api/certificates')
+      .then(r => r.json())
+      .then(data => {
+        setCertificates(Array.isArray(data) ? data.slice(0, 4) : []);
+        setLoading(false);
+      })
+      .catch(() => {
+        setCertificates([]);
+        setLoading(false);
+      });
+  }, []);
+
+  return { certificates, loading };
+};

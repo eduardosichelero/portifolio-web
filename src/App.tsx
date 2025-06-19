@@ -20,8 +20,8 @@ import { NotionNotes } from '@/components/data/NotionNotes';
 import { Modal } from '@/components/common/Modal';
 import { ProjectsContent } from '@/components/common/ProjectsModal';
 import { PublicationsContent } from '@/components/common/PublicationsModal';
-import { certificates } from '@/components/data/ActiveInfoProvider';
-import { allGoalsData } from '@/components/data/goalsData';
+import { useApiGoals, useApiCertificates } from '@/components/data/ActiveInfoProvider';
+
 
 const AllCertificates = lazy(() => import('@/screens/AllCertificates'));
 const NotFound = lazy(() => import('@/screens/NotFound'));
@@ -33,10 +33,18 @@ function App() {
   const [modalState, setModalState] = useState({ type: null, isOpen: false });
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const previewGoals = useMemo(() => allGoalsData.slice(0, 4), []);
-  const totalGoals = useMemo(() => allGoalsData.length, []);
-  const completedGoals = useMemo(() => allGoalsData.filter((goal: any) => goal.progress === 100).length, []);
-  const completionRate = useMemo(() => totalGoals > 0 ? Math.round((completedGoals / totalGoals) * 100) : 0, [totalGoals, completedGoals]);
+  const { goals: previewGoals, loading: loadingGoals } = useApiGoals();
+  const { certificates, loading: loadingCertificates } = useApiCertificates();
+
+  const totalGoals = useMemo(() => previewGoals.length, [previewGoals]);
+  const completedGoals = useMemo(
+    () => previewGoals.filter((goal: { progress: number }) => goal.progress === 100).length,
+    [previewGoals]
+  );
+  const completionRate = useMemo(
+    () => totalGoals > 0 ? Math.round((completedGoals / totalGoals) * 100) : 0,
+    [totalGoals, completedGoals]
+  );
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -82,14 +90,14 @@ function App() {
                         <>
                           <SectionList
                             title="Objetivos do momento"
-                            items={previewGoals}
+                            items={loadingGoals ? [] : previewGoals}
                             Card={GoalCard}
                             seeAllTo="/goals"
                             seeAllState={{}}
                           />
                           <SectionList
                             title="Minhas Certificações"
-                            items={certificates}
+                            items={loadingCertificates ? [] : certificates}
                             Card={CertificateCard}
                             seeAllTo="/certificates"
                             seeAllState={{ certificates }}
