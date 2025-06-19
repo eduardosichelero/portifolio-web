@@ -3,6 +3,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Calendar, ArrowLeft, Book } from 'lucide-react';
 import { Header } from '@/screens/Header';
 import { AppBackground } from '@/components/layout/AppBackground';
+import { LoadingSpinner } from '@/common/LoadingSpinner';
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('pt-BR', {
@@ -12,10 +13,20 @@ const formatDate = (dateString: string) => {
   });
 };
 
+interface NotionNote {
+  id: string;
+  url: string;
+  createdTime: string;
+  readingTime?: string;
+  title: string;
+  texto?: string;
+  tags?: string[];
+}
+
 export function AllNotionNotes() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [notes, setNotes] = useState(location.state?.notes || []);
+  const [notes, setNotes] = useState<NotionNote[]>(location.state?.notes || []);
   const [loading, setLoading] = useState(!location.state?.notes);
 
   const [isDarkMode, setIsDarkMode] = useState(
@@ -71,11 +82,11 @@ export function AllNotionNotes() {
         </div>
         <div className="space-y-6">
           {loading ? (
-            <div className="text-center py-4 text-gray-500">Carregando...</div>
+            <LoadingSpinner message="Carregando anotações..." />
           ) : notes.length === 0 ? (
             <div className="text-center py-4 text-gray-500">Nenhuma anotação encontrada</div>
           ) : (
-            notes.map((note) => (
+            notes.map((note: NotionNote) => (
               <a
                 key={note.id}
                 href={note.url}
@@ -101,7 +112,7 @@ export function AllNotionNotes() {
                   </p>
                 )}
                 <div className="flex flex-wrap gap-2">
-                  {note.tags && note.tags.map((tag, tagIndex) => (
+                  {note.tags && note.tags.map((tag: string, tagIndex: number) => (
                     <span
                       key={tagIndex}
                       className="px-3 py-1 text-sm font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-200"

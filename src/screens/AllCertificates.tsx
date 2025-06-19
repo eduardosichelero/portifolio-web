@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { CertificateCard } from '@/components/features/certificates/CertificateCard';
 import { Header } from '@/screens/Header';
 import { ArrowLeft } from 'lucide-react';
 import { AppBackground } from '@/components/layout/AppBackground';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import type { Certificate } from '@/components/data/ActiveInfoProvider';
 
 export function AllCertificates() {
   const navigate = useNavigate();
-  const [certificates, setCertificates] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const [certificates, setCertificates] = useState(location.state?.certificates || []);
+  const [loading, setLoading] = useState(!location.state?.certificates);
 
   const [isDarkMode, setIsDarkMode] = useState(
     () =>
@@ -17,20 +20,17 @@ export function AllCertificates() {
   );
 
   useEffect(() => {
-    fetch('https://portifolio-api-mu.vercel.app/api/certificates')
-      .then(r => r.json())
-      .then(data => {
-        setCertificates(Array.isArray(data) ? data : []);
-        setLoading(false);
-      })
-      .catch(() => {
-        setCertificates([]);
-        setLoading(false);
-      });
-  }, []);
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+
+    if (!location.state?.certificates) {
+      fetch('https://portifolio-api-mu.vercel.app/api/certificates')
+        .then(r => r.json())
+        .then(data => setCertificates(Array.isArray(data) ? data : []))
+        .finally(() => setLoading(false));
+    }
+  }, [location.state]);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     const handler = () => {
       setIsDarkMode(document.documentElement.classList.contains('dark'));
     };
@@ -65,12 +65,12 @@ export function AllCertificates() {
           </Link>
         </div>
         {loading ? (
-          <div className="text-center text-gray-500">Carregando certificados...</div>
+          <LoadingSpinner message="Carregando certificados..." />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {certificates.map((certificate, index) => (
+            {(certificates as Certificate[]).map((certificate: Certificate, index: number) => (
               <CertificateCard 
-                key={index} 
+                key={certificate.id || index} 
                 {...certificate}
               />
             ))}
