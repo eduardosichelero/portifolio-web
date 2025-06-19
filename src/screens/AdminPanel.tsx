@@ -1,4 +1,5 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import AdminLogin from './AdminLogin';
 
 type Goal = { id: string; title: string; deadline: string; progress: number; category: string; };
 type Certificate = { id: string; title: string; date: string; issuer: string; progress: number; externalUrl?: string; };
@@ -7,6 +8,7 @@ export default function AdminPanel() {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [certs, setCerts] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => !!localStorage.getItem('admin_token'));
 
   // States para os formulários
   const [goalForm, setGoalForm] = useState<Goal>({ id: '', title: '', deadline: '', progress: 0, category: '' });
@@ -30,12 +32,13 @@ export default function AdminPanel() {
   // Adicionar ou Editar Goal
   const addGoal = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const token = localStorage.getItem('admin_token');
     if (editingGoalId) {
       // Editar
       const updatedGoal = { ...goalForm, id: editingGoalId };
       const res = await fetch(`https://portifolio-api-mu.vercel.app/api/goals/${editingGoalId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(updatedGoal)
       });
       if (res.ok) {
@@ -48,7 +51,7 @@ export default function AdminPanel() {
       const goal = { ...goalForm, id: crypto.randomUUID() };
       const res = await fetch('https://portifolio-api-mu.vercel.app/api/goals', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(goal)
       });
       if (res.ok) {
@@ -66,17 +69,19 @@ export default function AdminPanel() {
 
   // Remover Goal
   const deleteGoal = async (id: string) => {
-    await fetch(`https://portifolio-api-mu.vercel.app/api/goals/${id}`, { method: 'DELETE' });
+    const token = localStorage.getItem('admin_token');
+    await fetch(`https://portifolio-api-mu.vercel.app/api/goals/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
     setGoals(goals.filter((g: Goal) => g.id !== id));
   };
 
   // Adicionar Certificado
   const addCert = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const token = localStorage.getItem('admin_token');
     const cert = { ...certForm, id: crypto.randomUUID() };
     const res = await fetch('https://portifolio-api-eduardosichelero.vercel.app/api/certificates', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(cert)
     });
     if (res.ok) {
@@ -87,14 +92,27 @@ export default function AdminPanel() {
 
   // Remover Certificado
   const deleteCert = async (id: string) => {
-    await fetch(`https://portifolio-api-eduardosichelero.vercel.app/api/certificates/${id}`, { method: 'DELETE' });
+    const token = localStorage.getItem('admin_token');
+    await fetch(`https://portifolio-api-eduardosichelero.vercel.app/api/certificates/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
     setCerts(certs.filter((c: Certificate) => c.id !== id));
   };
+
+  // Logout
+  const handleLogout = () => {
+    localStorage.removeItem('admin_token');
+    window.location.reload();
+  };
+
+  // Adicione esta verificação antes do return principal:
+  if (!isAuthenticated) {
+    return <AdminLogin onLogin={() => setIsAuthenticated(true)} />;
+  }
 
   if (loading) return <div>Carregando...</div>;
 
   return (
     <div>
+      <button onClick={handleLogout} style={{ float: 'right', margin: 8 }}>Sair</button>
       <h2>Painel Admin</h2>
 
       <h3>Goals</h3>

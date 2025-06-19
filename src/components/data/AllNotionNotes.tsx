@@ -3,7 +3,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import { Calendar, ArrowLeft, Book } from 'lucide-react';
 import { Header } from '@/screens/Header';
 import { AppBackground } from '@/components/layout/AppBackground';
-import { LoadingSpinner } from '@/common/LoadingSpinner';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 
 const formatDate = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('pt-BR', {
