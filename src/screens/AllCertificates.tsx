@@ -10,8 +10,8 @@ import type { Certificate } from '@/components/data/ActiveInfoProvider';
 export function AllCertificates() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [certificates, setCertificates] = useState(location.state?.certificates || []);
-  const [loading, setLoading] = useState(!location.state?.certificates);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [isDarkMode, setIsDarkMode] = useState(
     () =>
@@ -22,13 +22,19 @@ export function AllCertificates() {
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 
-    if (!location.state?.certificates) {
-      fetch('https://portifolio-api-mu.vercel.app/api/certificates')
-        .then(r => r.json())
-        .then(data => setCertificates(Array.isArray(data) ? data : []))
-        .finally(() => setLoading(false));
-    }
-  }, [location.state]);
+    fetch('https://portifolio-api-mu.vercel.app/api/certificates')
+      .then(r => r.json())
+      .then(data => {
+        const certs = Array.isArray(data)
+          ? data.map((cert, idx) => ({
+              ...cert,
+              id: cert.id || `cert-${idx}-${cert.title?.slice(0, 8) || 'noid'}`
+            }))
+          : [];
+        setCertificates(certs);
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
   useEffect(() => {
     const handler = () => {
@@ -68,9 +74,9 @@ export function AllCertificates() {
           <LoadingSpinner message="Carregando certificados..." />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(certificates as Certificate[]).map((certificate: Certificate, index: number) => (
-              <CertificateCard 
-                key={certificate.id || index} 
+            {certificates.map((certificate: Certificate) => (
+              <CertificateCard
+                key={certificate.id}
                 {...certificate}
               />
             ))}
