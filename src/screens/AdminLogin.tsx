@@ -12,14 +12,14 @@ export default function AdminLogin({ onLogin }: LoginProps) {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-const res = await fetch('https://portifolio-api-mu.vercel.app/api/auth', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ usuario: user, senha: pass })
-});
+    const res = await fetch('https://portifolio-api-mu.vercel.app/api/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usuario: user, senha: pass })
+    });
     if (res.ok) {
       const { token } = await res.json();
-      localStorage.setItem('admin_token', token);
+      sessionStorage.setItem('admin_token', token); // <-- Persistência só até fechar o navegador
       onLogin();
     } else {
       setError('Usuário ou senha inválidos');
@@ -27,42 +27,31 @@ const res = await fetch('https://portifolio-api-mu.vercel.app/api/auth', {
   };
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #6366f1 0%, #a5b4fc 100%)' }}>
-      <form onSubmit={handleLogin} style={{ background: 'white', borderRadius: 16, boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)', padding: 32, minWidth: 320, display: 'flex', flexDirection: 'column', gap: 18 }}>
-        <h2 style={{ textAlign: 'center', color: '#3730a3', fontWeight: 700, fontSize: 28, marginBottom: 12 }}>Painel Admin</h2>
-        <label style={{ fontWeight: 500, color: '#4b5563' }}>Usuário</label>
+    <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark">
+      <form onSubmit={handleLogin} className="bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 min-w-[320px] flex flex-col gap-5">
+        <h2 className="text-center text-primary-light dark:text-primary-dark font-bold text-2xl mb-2">Painel Admin</h2>
+        <label className="font-medium text-gray-600 dark:text-gray-300">Usuário</label>
         <input 
           placeholder="Digite seu usuário" 
           value={user} 
           onChange={e => setUser(e.target.value)} 
           required 
-          style={{ padding: 10, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 16 }}
+          className="p-2 rounded-lg border border-border-light dark:border-border-dark text-base bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark"
         />
-        <label style={{ fontWeight: 500, color: '#4b5563' }}>Senha</label>
+        <label className="font-medium text-gray-600 dark:text-gray-300">Senha</label>
         <input 
           type="password" 
           placeholder="Digite sua senha" 
           value={pass} 
           onChange={e => setPass(e.target.value)} 
           required 
-          style={{ padding: 10, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 16 }}
+          className="p-2 rounded-lg border border-border-light dark:border-border-dark text-base bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark"
         />
         <button 
           type="submit" 
-          style={{
-            marginTop: 10,
-            background: 'linear-gradient(90deg, #6366f1 0%, #818cf8 100%)',
-            color: 'white',
-            border: 'none',
-            borderRadius: 8,
-            padding: '12px 0',
-            fontWeight: 600,
-            fontSize: 18,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px 0 rgba(99,102,241,0.10)'
-          }}
+          className="mt-2 bg-primary-light dark:bg-primary-dark text-white rounded-lg py-3 font-semibold text-lg cursor-pointer shadow transition hover:bg-primary-dark dark:hover:bg-primary-light"
         >Entrar</button>
-        {error && <div style={{ color: '#dc2626', textAlign: 'center', marginTop: 8 }}>{error}</div>}
+        {error && <div className="text-red-600 text-center mt-2">{error}</div>}
       </form>
     </div>
   );

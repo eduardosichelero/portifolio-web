@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
+import React, { useEffect, useState, FormEvent } from 'react';
 import AdminLogin from './AdminLogin';
 
 type Goal = { id: string; title: string; deadline: string; progress: number; category: string; };
@@ -8,7 +8,7 @@ export default function AdminPanel() {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [certs, setCerts] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(() => !!localStorage.getItem('admin_token'));
+  const [isAuthenticated, setIsAuthenticated] = useState(() => !!sessionStorage.getItem('admin_token'));
 
   // States para os formulários
   const [goalForm, setGoalForm] = useState<Goal>({ id: '', title: '', deadline: '', progress: 0, category: '' });
@@ -35,7 +35,7 @@ export default function AdminPanel() {
   // Adicionar ou Editar Goal
   const addGoal = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const token = localStorage.getItem('admin_token');
+    const token = sessionStorage.getItem('admin_token');
     if (editingGoalId) {
       // Editar
       const updatedGoal = { ...goalForm, id: editingGoalId };
@@ -72,7 +72,7 @@ export default function AdminPanel() {
 
   // Remover Goal
   const deleteGoal = async (id: string) => {
-    const token = localStorage.getItem('admin_token');
+    const token = sessionStorage.getItem('admin_token');
     await fetch(`https://portifolio-api-mu.vercel.app/api/goals/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
     setGoals(goals.filter((g: Goal) => g.id !== id));
   };
@@ -81,7 +81,7 @@ export default function AdminPanel() {
   const addCert = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCertError('');
-    const token = localStorage.getItem('admin_token');
+    const token = sessionStorage.getItem('admin_token');
     try {
       if (editingCertId) {
         // Editar
@@ -128,14 +128,14 @@ export default function AdminPanel() {
 
   // Remover Certificado
   const deleteCert = async (id: string) => {
-    const token = localStorage.getItem('admin_token');
+    const token = sessionStorage.getItem('admin_token');
     await fetch(`https://portifolio-api-mu.vercel.app/api/certificates/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
     setCerts(certs.filter((c: Certificate) => c.id !== id));
   };
 
   // Logout
   const handleLogout = () => {
-    localStorage.removeItem('admin_token');
+    sessionStorage.removeItem('admin_token');
     window.location.reload();
   };
 
@@ -144,211 +144,87 @@ export default function AdminPanel() {
   }
 
   if (loading) return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #6366f1 0%, #a5b4fc 100%)',
-      color: '#3730a3',
-      fontSize: 24,
-      fontWeight: 600
-    }}>Carregando...</div>
+    <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark">
+      <div className="text-primary-light dark:text-primary-dark text-2xl font-semibold">Carregando...</div>
+    </div>
   );
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #6366f1 0%, #a5b4fc 100%)',
-      padding: 0,
-      fontFamily: 'Inter, Arial, sans-serif'
-    }}>
-      <div style={{
-        maxWidth: 800,
-        margin: '40px auto',
-        background: 'white',
-        borderRadius: 18,
-        boxShadow: '0 4px 24px 0 rgba(0,0,0,0.10)',
-        padding: 36,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 32
-      }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-          <h2 style={{ color: '#3730a3', fontWeight: 700, fontSize: 32, margin: 0 }}>Painel Admin</h2>
-          <button onClick={handleLogout} style={{
-            background: '#6366f1',
-            color: 'white',
-            border: 'none',
-            borderRadius: 8,
-            padding: '8px 18px',
-            fontWeight: 600,
-            cursor: 'pointer',
-            boxShadow: '0 2px 8px 0 rgba(99,102,241,0.10)'
-          }}>Sair</button>
-        </div>
-
+    <div className="min-h-screen bg-background-light dark:bg-background-dark font-sans">
+      <div className="max-w-3xl mx-auto my-10 bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 flex flex-col gap-8">
+        <header className="flex justify-between items-center mb-4">
+          <h2 className="text-primary-light dark:text-primary-dark font-bold text-3xl m-0">Painel Admin</h2>
+          <button className="bg-primary-light dark:bg-primary-dark text-white rounded-lg px-4 py-2 font-semibold shadow transition hover:bg-primary-dark dark:hover:bg-primary-light" onClick={handleLogout}>Sair</button>
+        </header>
         {/* Goals */}
         <section>
-          <h3 style={{ color: '#6366f1', fontWeight: 600, fontSize: 22, marginBottom: 12 }}>Goals</h3>
-          <form onSubmit={addGoal} style={{
-            marginBottom: 24,
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 12
-          }}>
-            <input placeholder="Título" value={goalForm.title} onChange={e => setGoalForm({ ...goalForm, title: e.target.value })} required style={inputStyle} />
-            <input placeholder="Deadline" value={goalForm.deadline} onChange={e => setGoalForm({ ...goalForm, deadline: e.target.value })} required style={inputStyle} />
-            <input placeholder="Categoria" value={goalForm.category} onChange={e => setGoalForm({ ...goalForm, category: e.target.value })} required style={inputStyle} />
-            <input type="number" placeholder="Progresso" value={goalForm.progress} onChange={e => setGoalForm({ ...goalForm, progress: Number(e.target.value) })} min={0} max={100} required style={{ ...inputStyle, width: 100 }} />
-            <button type="submit" style={buttonStyle}>{editingGoalId ? 'Salvar Alteração' : 'Adicionar Goal'}</button>
+          <h3 className="text-primary-light dark:text-primary-dark font-semibold text-xl mb-3">Goals</h3>
+          <form className="flex flex-wrap gap-3 mb-6" onSubmit={addGoal}>
+            <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Título" value={goalForm.title} onChange={e => setGoalForm({ ...goalForm, title: e.target.value })} required aria-label="Título do Goal" />
+            <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Deadline" value={goalForm.deadline} onChange={e => setGoalForm({ ...goalForm, deadline: e.target.value })} required aria-label="Deadline do Goal" />
+            <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Categoria" value={goalForm.category} onChange={e => setGoalForm({ ...goalForm, category: e.target.value })} required aria-label="Categoria do Goal" />
+            <input type="number" className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Progresso" value={goalForm.progress} onChange={e => setGoalForm({ ...goalForm, progress: Number(e.target.value) })} min={0} max={100} required aria-label="Progresso do Goal" />
+            <button type="submit" className="bg-primary-light dark:bg-primary-dark text-white rounded-lg px-4 py-2 font-semibold transition hover:bg-primary-dark dark:hover:bg-primary-light">{editingGoalId ? 'Salvar Alteração' : 'Adicionar Goal'}</button>
             {editingGoalId && (
-              <button type="button" onClick={() => { setEditingGoalId(null); setGoalForm({ id: '', title: '', deadline: '', progress: 0, category: '' }); }} style={cancelButtonStyle}>
+              <button type="button" className="bg-gray-200 dark:bg-gray-700 text-primary-light dark:text-primary-dark rounded-lg px-4 py-2 font-semibold" onClick={() => { setEditingGoalId(null); setGoalForm({ id: '', title: '', deadline: '', progress: 0, category: '' }); }}>
                 Cancelar
               </button>
             )}
           </form>
-          <ul style={{ marginBottom: 32, padding: 0, listStyle: 'none' }}>
+          <ul className="space-y-2">
             {goals.map((goal: Goal) => (
-              <li key={goal.id} style={listItemStyle}>
-                <div style={{ flex: 1 }}>
-                  <span style={{ fontWeight: 500 }}>{goal.title}</span>
-                  <span style={{ color: '#818cf8', fontWeight: 600, marginLeft: 8 }}>{goal.progress}%</span>
-                  <div style={{ fontSize: 13, color: '#6b7280', marginTop: 2 }}>
-                    {goal.category} | {goal.deadline}
-                  </div>
+              <li key={goal.id} className="bg-background-light dark:bg-gray-800 rounded-lg p-4 flex items-center justify-between gap-2 flex-wrap border border-border-light dark:border-border-dark">
+                <div>
+                  <span className="font-medium text-text-light dark:text-text-dark">{goal.title}</span>
+                  <span className="text-primary-light dark:text-primary-dark font-semibold ml-2">{goal.progress}%</span>
+                  <div className="text-xs text-gray-500 mt-1">{goal.category} | {goal.deadline}</div>
                 </div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <button onClick={() => deleteGoal(goal.id)} style={removeButtonStyle}>Remover</button>
-                  <button onClick={() => startEditGoal(goal)} style={editButtonStyle}>Editar</button>
+                <div className="flex gap-2">
+                  <button onClick={() => deleteGoal(goal.id)} className="bg-red-600 text-white rounded px-3 py-1 font-medium">Remover</button>
+                  <button onClick={() => startEditGoal(goal)} className="bg-primary-light dark:bg-primary-dark text-white rounded px-3 py-1 font-medium">Editar</button>
                 </div>
               </li>
             ))}
           </ul>
         </section>
-
         {/* Certificados */}
         <section>
-          <h3 style={{ color: '#6366f1', fontWeight: 600, fontSize: 22, marginBottom: 12 }}>Certificados</h3>
-          <form onSubmit={addCert} style={{
-            marginBottom: 24,
-            display: 'flex',
-            flexWrap: 'wrap',
-            gap: 12
-          }}>
-            <input placeholder="Título" value={certForm.title} onChange={e => setCertForm({ ...certForm, title: e.target.value })} required style={inputStyle} />
-            <input placeholder="Data" value={certForm.date} onChange={e => setCertForm({ ...certForm, date: e.target.value })} required style={inputStyle} />
-            <input placeholder="Emissor" value={certForm.issuer} onChange={e => setCertForm({ ...certForm, issuer: e.target.value })} required style={inputStyle} />
-            <input type="number" placeholder="Progresso" value={certForm.progress} onChange={e => setCertForm({ ...certForm, progress: Number(e.target.value) })} min={0} max={100} required style={{ ...inputStyle, width: 100 }} />
-            <input placeholder="URL externa" value={certForm.externalUrl} onChange={e => setCertForm({ ...certForm, externalUrl: e.target.value })} style={{ ...inputStyle, flex: 2 }} />
-            <button type="submit" style={buttonStyle}>{editingCertId ? 'Salvar Alteração' : 'Adicionar Certificado'}</button>
+          <h3 className="text-primary-light dark:text-primary-dark font-semibold text-xl mb-3">Certificados</h3>
+          <form className="flex flex-wrap gap-3 mb-6" onSubmit={addCert}>
+            <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Título" value={certForm.title} onChange={e => setCertForm({ ...certForm, title: e.target.value })} required aria-label="Título do Certificado" />
+            <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Data" value={certForm.date} onChange={e => setCertForm({ ...certForm, date: e.target.value })} required aria-label="Data do Certificado" />
+            <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Emissor" value={certForm.issuer} onChange={e => setCertForm({ ...certForm, issuer: e.target.value })} required aria-label="Emissor do Certificado" />
+            <input type="number" className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Progresso" value={certForm.progress} onChange={e => setCertForm({ ...certForm, progress: Number(e.target.value) })} min={0} max={100} required aria-label="Progresso do Certificado" />
+            <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="URL externa" value={certForm.externalUrl} onChange={e => setCertForm({ ...certForm, externalUrl: e.target.value })} aria-label="URL externa do Certificado" />
+            <button type="submit" className="bg-primary-light dark:bg-primary-dark text-white rounded-lg px-4 py-2 font-semibold transition hover:bg-primary-dark dark:hover:bg-primary-light">{editingCertId ? 'Salvar Alteração' : 'Adicionar Certificado'}</button>
             {editingCertId && (
-              <button type="button" onClick={() => { setEditingCertId(null); setCertForm({ id: '', title: '', date: '', issuer: '', progress: 0, externalUrl: '' }); }} style={cancelButtonStyle}>
+              <button type="button" className="bg-gray-200 dark:bg-gray-700 text-primary-light dark:text-primary-dark rounded-lg px-4 py-2 font-semibold" onClick={() => { setEditingCertId(null); setCertForm({ id: '', title: '', date: '', issuer: '', progress: 0, externalUrl: '' }); }}>
                 Cancelar
               </button>
             )}
           </form>
-          {certError && <div style={{ color: '#dc2626', marginBottom: 16 }}>{certError}</div>}
-          <ul style={{ marginBottom: 0, padding: 0, listStyle: 'none' }}>
+          {certError && <div className="text-red-600 mb-4" role="alert">{certError}</div>}
+          <ul className="space-y-2">
             {certs.map((cert: Certificate) => (
-              <li key={cert.id} style={listItemStyle}>
-                <div style={{ flex: 1 }}>
-                  <span style={{ fontWeight: 500 }}>{cert.title}</span>
-                  <span style={{ color: '#818cf8', fontWeight: 600, marginLeft: 8 }}>{cert.issuer}</span>
-                  <div style={{ fontSize: 13, color: '#6b7280', marginTop: 2 }}>
+              <li key={cert.id} className="bg-background-light dark:bg-gray-800 rounded-lg p-4 flex items-center justify-between gap-2 flex-wrap border border-border-light dark:border-border-dark">
+                <div>
+                  <span className="font-medium text-text-light dark:text-text-dark">{cert.title}</span>
+                  <span className="text-primary-light dark:text-primary-dark font-semibold ml-2">{cert.issuer}</span>
+                  <div className="text-xs text-gray-500 mt-1">
                     {cert.date} | {cert.progress}% {cert.externalUrl && (
-                      <a href={cert.externalUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#6366f1', marginLeft: 8, textDecoration: 'underline' }}>Ver</a>
+                      <a href={cert.externalUrl} target="_blank" rel="noopener noreferrer" className="text-primary-light dark:text-primary-dark underline ml-2">Ver</a>
                     )}
                   </div>
                 </div>
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <button onClick={() => deleteCert(cert.id)} style={removeButtonStyle}>Remover</button>
-                  <button onClick={() => startEditCert(cert)} style={editButtonStyle}>Editar</button>
+                <div className="flex gap-2">
+                  <button onClick={() => deleteCert(cert.id)} className="bg-red-600 text-white rounded px-3 py-1 font-medium">Remover</button>
+                  <button onClick={() => startEditCert(cert)} className="bg-primary-light dark:bg-primary-dark text-white rounded px-3 py-1 font-medium">Editar</button>
                 </div>
               </li>
             ))}
           </ul>
         </section>
       </div>
-      {/* Responsividade simples */}
-      <style>
-        {`
-        @media (max-width: 600px) {
-          .admin-panel-card {
-            padding: 12px !important;
-          }
-          .admin-panel-form {
-            flex-direction: column !important;
-            gap: 8px !important;
-          }
-        }
-        `}
-      </style>
     </div>
   );
 }
-
-// Estilos reutilizáveis
-const inputStyle: React.CSSProperties = {
-  flex: 1,
-  minWidth: 120,
-  padding: 8,
-  borderRadius: 8,
-  border: '1px solid #d1d5db',
-  fontSize: 15,
-  background: '#f9fafb'
-};
-
-const buttonStyle: React.CSSProperties = {
-  background: 'linear-gradient(90deg, #6366f1 0%, #818cf8 100%)',
-  color: 'white',
-  border: 'none',
-  borderRadius: 8,
-  padding: '10px 18px',
-  fontWeight: 600,
-  fontSize: 16,
-  cursor: 'pointer'
-};
-
-const cancelButtonStyle: React.CSSProperties = {
-  background: '#e0e7ff',
-  color: '#3730a3',
-  border: 'none',
-  borderRadius: 8,
-  padding: '10px 18px',
-  fontWeight: 600,
-  fontSize: 16,
-  cursor: 'pointer'
-};
-
-const removeButtonStyle: React.CSSProperties = {
-  background: '#dc2626',
-  color: 'white',
-  border: 'none',
-  borderRadius: 6,
-  padding: '6px 12px',
-  fontWeight: 500,
-  marginRight: 0,
-  cursor: 'pointer'
-};
-
-const editButtonStyle: React.CSSProperties = {
-  background: '#6366f1',
-  color: 'white',
-  border: 'none',
-  borderRadius: 6,
-  padding: '6px 12px',
-  fontWeight: 500,
-  cursor: 'pointer'
-};
-
-const listItemStyle: React.CSSProperties = {
-  background: '#f3f4f6',
-  borderRadius: 10,
-  marginBottom: 10,
-  padding: '12px 18px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 8
-};
