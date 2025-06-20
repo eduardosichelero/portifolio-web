@@ -1,5 +1,6 @@
 import React, { useEffect, useState, FormEvent } from 'react';
 import AdminLogin from './AdminLogin';
+import { GoalCategory } from '../components/features/goals/GoalCard';
 
 type Goal = { id: string; title: string; deadline: string; progress: number; category: string; };
 type Certificate = { id: string; title: string; date: string; issuer: string; progress: number; externalUrl?: string; };
@@ -10,15 +11,12 @@ export default function AdminPanel() {
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(() => !!sessionStorage.getItem('admin_token'));
 
-  // States para os formulários
   const [goalForm, setGoalForm] = useState<Goal>({ id: '', title: '', deadline: '', progress: 0, category: '' });
   const [certForm, setCertForm] = useState<Certificate>({ id: '', title: '', date: '', issuer: '', progress: 0, externalUrl: '' });
 
-  // Estados para edição
   const [editingGoalId, setEditingGoalId] = useState<string | null>(null);
   const [editingCertId, setEditingCertId] = useState<string | null>(null);
 
-  // Erros
   const [certError, setCertError] = useState('');
 
   useEffect(() => {
@@ -32,12 +30,10 @@ export default function AdminPanel() {
     });
   }, []);
 
-  // Adicionar ou Editar Goal
   const addGoal = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const token = sessionStorage.getItem('admin_token');
     if (editingGoalId) {
-      // Editar
       const updatedGoal = { ...goalForm, id: editingGoalId };
       const res = await fetch(`https://portifolio-api-mu.vercel.app/api/goals/${editingGoalId}`, {
         method: 'PUT',
@@ -50,7 +46,6 @@ export default function AdminPanel() {
         setEditingGoalId(null);
       }
     } else {
-      // Adicionar
       const goal = { ...goalForm, id: crypto.randomUUID() };
       const res = await fetch('https://portifolio-api-mu.vercel.app/api/goals', {
         method: 'POST',
@@ -64,27 +59,23 @@ export default function AdminPanel() {
     }
   };
 
-  // Função para iniciar edição de Goal
   const startEditGoal = (goal: Goal) => {
     setGoalForm(goal);
     setEditingGoalId(goal.id);
   };
 
-  // Remover Goal
   const deleteGoal = async (id: string) => {
     const token = sessionStorage.getItem('admin_token');
     await fetch(`https://portifolio-api-mu.vercel.app/api/goals/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
     setGoals(goals.filter((g: Goal) => g.id !== id));
   };
 
-  // Adicionar ou Editar Certificado
   const addCert = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setCertError('');
     const token = sessionStorage.getItem('admin_token');
     try {
       if (editingCertId) {
-        // Editar
         const updatedCert = { ...certForm, id: editingCertId };
         const res = await fetch(`https://portifolio-api-mu.vercel.app/api/certificates/${editingCertId}`, {
           method: 'PUT',
@@ -100,7 +91,6 @@ export default function AdminPanel() {
           setCertError('Erro ao editar certificado.');
         }
       } else {
-        // Adicionar
         const cert = { ...certForm, id: crypto.randomUUID() };
         const res = await fetch('https://portifolio-api-mu.vercel.app/api/certificates', {
           method: 'POST',
@@ -120,20 +110,17 @@ export default function AdminPanel() {
     }
   };
 
-  // Função para iniciar edição de Certificado
   const startEditCert = (cert: Certificate) => {
     setCertForm(cert);
     setEditingCertId(cert.id);
   };
 
-  // Remover Certificado
   const deleteCert = async (id: string) => {
     const token = sessionStorage.getItem('admin_token');
     await fetch(`https://portifolio-api-mu.vercel.app/api/certificates/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
     setCerts(certs.filter((c: Certificate) => c.id !== id));
   };
 
-  // Logout
   const handleLogout = () => {
     sessionStorage.removeItem('admin_token');
     window.location.reload();
@@ -150,19 +137,30 @@ export default function AdminPanel() {
   );
 
   return (
-    <div className="min-h-screen bg-background-light dark:bg-background-dark font-sans">
-      <div className="max-w-3xl mx-auto my-10 bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-8 flex flex-col gap-8">
-        <header className="flex justify-between items-center mb-4">
+    <div className="min-h-screen font-sans">
+      <div className="max-w-3xl mx-auto my-16 bg-transparent rounded-2xl shadow-lg p-8 flex flex-col gap-12">
+        <header className="flex justify-between items-center mb-12">
           <h2 className="text-primary-light dark:text-primary-dark font-bold text-3xl m-0">Painel Admin</h2>
           <button className="bg-primary-light dark:bg-primary-dark text-white rounded-lg px-4 py-2 font-semibold shadow transition hover:bg-primary-dark dark:hover:bg-primary-light" onClick={handleLogout}>Sair</button>
         </header>
         {/* Goals */}
         <section>
           <h3 className="text-primary-light dark:text-primary-dark font-semibold text-xl mb-3">Goals</h3>
-          <form className="flex flex-wrap gap-3 mb-6" onSubmit={addGoal}>
+          <form className="flex flex-wrap gap-6 mb-10" onSubmit={addGoal}>
             <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Título" value={goalForm.title} onChange={e => setGoalForm({ ...goalForm, title: e.target.value })} required aria-label="Título do Goal" />
             <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Deadline" value={goalForm.deadline} onChange={e => setGoalForm({ ...goalForm, deadline: e.target.value })} required aria-label="Deadline do Goal" />
-            <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Categoria" value={goalForm.category} onChange={e => setGoalForm({ ...goalForm, category: e.target.value })} required aria-label="Categoria do Goal" />
+            <select
+              className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base"
+              value={goalForm.category}
+              onChange={e => setGoalForm({ ...goalForm, category: e.target.value })}
+              required
+              aria-label="Categoria do Goal"
+            >
+              <option value="" disabled>Selecione a categoria</option>
+              {Object.entries(GoalCategory).map(([key, value]) => (
+                <option key={key} value={value}>{value}</option>
+              ))}
+            </select>
             <input type="number" className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Progresso" value={goalForm.progress} onChange={e => setGoalForm({ ...goalForm, progress: Number(e.target.value) })} min={0} max={100} required aria-label="Progresso do Goal" />
             <button type="submit" className="bg-primary-light dark:bg-primary-dark text-white rounded-lg px-4 py-2 font-semibold transition hover:bg-primary-dark dark:hover:bg-primary-light">{editingGoalId ? 'Salvar Alteração' : 'Adicionar Goal'}</button>
             {editingGoalId && (
@@ -190,7 +188,7 @@ export default function AdminPanel() {
         {/* Certificados */}
         <section>
           <h3 className="text-primary-light dark:text-primary-dark font-semibold text-xl mb-3">Certificados</h3>
-          <form className="flex flex-wrap gap-3 mb-6" onSubmit={addCert}>
+          <form className="flex flex-wrap gap-6 mb-10" onSubmit={addCert}>
             <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Título" value={certForm.title} onChange={e => setCertForm({ ...certForm, title: e.target.value })} required aria-label="Título do Certificado" />
             <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Data" value={certForm.date} onChange={e => setCertForm({ ...certForm, date: e.target.value })} required aria-label="Data do Certificado" />
             <input className="flex-1 min-w-[120px] p-2 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark text-base" placeholder="Emissor" value={certForm.issuer} onChange={e => setCertForm({ ...certForm, issuer: e.target.value })} required aria-label="Emissor do Certificado" />

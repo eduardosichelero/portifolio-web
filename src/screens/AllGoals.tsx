@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import { GoalCategory, GoalProps } from '@/components/features/goals/GoalCard';
 import { AppBackground } from '@/components/layout/AppBackground';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { BackToTopButton } from '@/components/common/BackToTopButton';
 
 interface RawGoal {
   title: string;
@@ -110,6 +111,7 @@ export function AllGoals() {
           )}
         </div>
       </main>
+      <BackToTopButton />
     </AppBackground>
   );
 }

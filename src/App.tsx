@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy, useMemo, useCallback } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { BackgroundLines } from '@/components/ui/background-lines';
 import { AppBackground } from '@/components/layout/AppBackground';
 import { Header } from '@/screens/Header';
@@ -21,7 +21,7 @@ import { Modal } from '@/components/common/Modal';
 import { ProjectsContent } from '@/components/common/ProjectsModal';
 import { PublicationsContent } from '@/components/common/PublicationsModal';
 import { useApiGoals, useApiCertificates } from '@/components/data/ActiveInfoProvider';
-
+import { BackToTopButton } from '@/components/common/BackToTopButton';
 
 const AllCertificates = lazy(() => import('@/screens/AllCertificates'));
 const NotFound = lazy(() => import('@/screens/NotFound'));
@@ -32,6 +32,7 @@ const AdminPanel = lazy(() => import('@/screens/AdminPanel'));
 function App() {
   const [modalState, setModalState] = useState({ type: null, isOpen: false });
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const location = useLocation();
 
   const { goals: previewGoals, loading: loadingGoals } = useApiGoals();
   const { certificates, loading: loadingCertificates } = useApiCertificates();
@@ -124,7 +125,8 @@ function App() {
             </Routes>
           </Suspense>
         </main>
-        <Footer />
+        {/* Renderiza o Footer apenas se não estiver na rota /admin */}
+        {location.pathname !== '/admin' && <Footer />}
       </div>
       <Modal
         isOpen={modalState.isOpen && modalState.type === 'projects'}

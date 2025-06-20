@@ -5,6 +5,7 @@ import { Header } from '@/screens/Header';
 import { ArrowLeft } from 'lucide-react';
 import { AppBackground } from '@/components/layout/AppBackground';
 import { LoadingSpinner } from '@/components/common/LoadingSpinner';
+import { BackToTopButton } from '@/components/common/BackToTopButton';
 import type { Certificate } from '@/components/data/ActiveInfoProvider';
 
 export function AllCertificates() {
@@ -83,6 +84,7 @@ export function AllCertificates() {
           </div>
         )}
       </main>
+      <BackToTopButton />
     </AppBackground>
   );
 }
