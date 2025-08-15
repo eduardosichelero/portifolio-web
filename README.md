@@ -87,34 +87,27 @@ Os arquivos finais ficarão na pasta `dist/`.
 
 ---
 
-## 📦 Deploy no GitHub Pages
 
-Este projeto usa o pacote `gh-pages` para deploy automático.
+## 📦 Deploy na Vercel
+
+Este projeto está hospedado na Vercel. Para publicar:
 
 ```bash
-npm run deploy
+vercel --prod
 ```
 
-Esse comando gera a build e publica o conteúdo da pasta `dist` na branch `gh-pages`.
+Os arquivos finais ficam na pasta `dist/`.
 
-⚠️ Verifique se os seguintes campos estão corretamente configurados:
+## 📜 Scripts disponíveis
 
-### `vite.config.ts`
+- `npm run dev` — inicia ambiente de desenvolvimento
+- `npm run build` — gera build de produção
+- `npm run preview` — visualiza build local
+- `npm run lint` — verifica padrões de código
 
-```ts
-export default defineConfig({
-  base: '/portifolio-web/',
-  // outras configs...
-});
-```
+## 🔑 Variáveis de ambiente
 
-### `package.json`
-
-```json
-"homepage": "https://eduardosichelero.github.io/portifolio-web/"
-```
-
----
+Veja o arquivo `.env.example` para configuração das variáveis necessárias.
 
 ## 🔗 Integração com API
 

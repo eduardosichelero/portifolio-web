@@ -4,7 +4,7 @@ import path from 'path';
 
 
 export default defineConfig({
-  base: '/portifolio-web/', 
+  base: '/', 
   plugins: [react()],
   optimizeDeps: {
     exclude: ['lucide-react'],

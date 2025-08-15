@@ -10,7 +10,6 @@
     "preview": "vite preview",
     "start": "vite"
   },
-  // ...homepage removido para deploy na Vercel...
   "dependencies": {
     "clsx": "^2.1.1",
     "lucide-react": "^0.344.0",
