@@ -6,14 +6,11 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "postbuild": "copy dist\\index.html dist\\404.html",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "start": "vite"
   },
-  "homepage": "https://eduardosichelero.github.io/portifolio-web/",
+  // ...homepage removido para deploy na Vercel...
   "dependencies": {
     "clsx": "^2.1.1",
     "lucide-react": "^0.344.0",
