@@ -33,6 +33,10 @@ const AllCertificates = lazy(() => import('@/screens/AllCertificates'));
 const NotFound = lazy(() => import('@/screens/NotFound'));
 const AllGoals = lazy(() => import('@/screens/AllGoals'));
 const AllNotionNotes = lazy(() => import('@/components/data/AllNotionNotes'));
+const AllNotes = lazy(() => import('@/screens/AllNotes').then((m) => ({ default: m.AllNotes })));
+const TechnicalNotesCard = lazy(() => 
+  import('@/components/features/notes/TechnicalNotesCard').then((m) => ({ default: m.TechnicalNotesCard }))
+);
 
 function App() {
   const [modalState, setModalState] = useState({ type: null, isOpen: false });
@@ -111,9 +115,10 @@ function App() {
                               externalUrl: c.externalUrl,
                             })}
                             seeAllTo="/certificates"
-                            seeAllState={{ certificates }}
-                          />
-                          <NotionNotes />
+                            seeAllState={{ certificates }}                          />                          <NotionNotes />
+                          <Suspense fallback={<LoadingSpinner message="Carregando anotações técnicas..." />}>
+                            <TechnicalNotesCard />
+                          </Suspense>
                         </>
                       }
                       right={
@@ -128,10 +133,10 @@ function App() {
                     />
                   </main>
                 }
-              />
-              <Route path="/goals" element={<AllGoals />} />
+              />              <Route path="/goals" element={<AllGoals />} />
               <Route path="/certificates" element={<AllCertificates />} />
               <Route path="/notes" element={<AllNotionNotes />} />
+              <Route path="/all-notes" element={<AllNotes />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

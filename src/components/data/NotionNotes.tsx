@@ -60,20 +60,27 @@ export function NotionNotes() {
     });
 
   const previewNotes = notes.slice(0, PREVIEW_COUNT);
-
   return (
     <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800 dark:text-gray-100 notion-notes-container">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Anotações do Notion</h3>
-        {notes.length >= PREVIEW_COUNT && (
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Anotações</h3>
+        <div className="flex gap-2">
           <Link
-            to="/notes"
-            state={{ notes }}
-            className="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 flex items-center"
+            to="/all-notes"
+            className="text-sm text-green-600 hover:text-green-700 dark:text-green-400 flex items-center px-3 py-1 bg-green-50 dark:bg-green-900/20 rounded-full transition-colors"
           >
-            Ver todas <ArrowRight className="w-4 h-4 ml-1" />
+            Técnicas <ArrowRight className="w-4 h-4 ml-1" />
           </Link>
-        )}
+          {notes.length >= PREVIEW_COUNT && (
+            <Link
+              to="/notes"
+              state={{ notes }}
+              className="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 flex items-center px-3 py-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-full transition-colors"
+            >
+              Ver todas <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
+          )}
+        </div>
       </div>
 
       {error ? (

@@ -13,10 +13,10 @@ export function SeeAllButton({ to, state, children = "Ver todos" }: SeeAllButton
     <Link
       to={to}
       state={state}
-      className="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400"
+      className="text-sm text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 flex items-center px-3 py-2 bg-indigo-50 dark:bg-indigo-900/20 rounded-full transition-colors"
     >
       {children}
-      <ArrowRight className="w-4 h-4 ml-1" /> 
+      <ArrowRight className="w-4 h-4 ml-1" />
     </Link>
   );
 }

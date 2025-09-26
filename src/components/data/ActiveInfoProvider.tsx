@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-// Definir tipos para os dados de objetivos e certificados
+// Definir tipos atualizados para corresponder à estrutura da API
 export interface Goal {
   id: string;
   title: string;
@@ -9,7 +9,13 @@ export interface Goal {
 
 export interface Certificate {
   id: string;
-  title: string;
+  name: string;        // Campo principal da API
+  title?: string;      // Para compatibilidade com componentes existentes
+  issuer: string;
+  date: string;
+  credentialUrl: string;
+  imageUrl: string;
+  progress: number;
 }
 
 export const useApiGoals = (options?: { all?: boolean }) => {
@@ -42,12 +48,24 @@ export const useApiCertificates = (options?: { all?: boolean }) => {
     fetch('https://portifolio-api-mu.vercel.app/api/certificates')
       .then(r => r.json())
       .then(data => {
-        setCertificates(Array.isArray(data)
-          ? (options?.all ? data : data.slice(0, 4))
-          : []);
+        const processedCertificates = Array.isArray(data)
+          ? data.map((cert, idx) => ({
+              id: cert.id || `cert-${idx}-${cert.name?.slice(0, 8) || 'noid'}`,
+              name: cert.name || 'Certificado sem nome',
+              title: cert.name || cert.title || 'Certificado sem nome', // ← MAPEAMENTO PARA TÍTULO
+              issuer: cert.issuer || 'Não informado',
+              date: cert.date || 'Não informado',
+              credentialUrl: cert.credentialUrl || '',
+              imageUrl: cert.imageUrl || '',
+              progress: Math.min(Math.max(cert.progress || 0, 0), 100)
+            }))
+          : [];
+        
+        setCertificates(options?.all ? processedCertificates : processedCertificates.slice(0, 4));
         setLoading(false);
       })
-      .catch(() => {
+      .catch(error => {
+        console.error('Erro ao carregar certificados:', error);
         setCertificates([]);
         setLoading(false);
       });
