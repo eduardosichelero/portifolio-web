@@ -38,9 +38,6 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                Telefone: <span>(54) 9 99595865</span>
-              </li>
-              <li>
                 LinkedIn:{' '}
                 <a
                   href="https://linkedin.com/in/eduardo-sichelero"

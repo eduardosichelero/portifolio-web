@@ -1,18 +1,15 @@
-import React, { useState, useEffect, Suspense, lazy, useMemo, useCallback } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { BackgroundLines } from '@/components/ui/background-lines';
+import { useState, useEffect, Suspense, lazy, useCallback } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { AppBackground } from '@/components/layout/AppBackground';
 import { Header } from '@/screens/Header';
 import { Footer } from '@/screens/Footer';
 import { MainGrid } from '@/components/layout/MainGrid';
 import { ProfileSection } from '@/components/features/about/ProfileSection';
 import { AboutMeCard } from '@/components/features/about/AboutMeCard';
-import { WorkExperienceSection } from '@/components/features/about/WorkExperienceSection';
 import { StatsOverview } from '@/components/features/goals/StatsOverview';
 import { SectionList } from '@/components/features/goals/SectionList';
-import { GoalCard } from '@/components/features/goals/GoalCard';
+import { GoalCard, GoalCategory } from '@/components/features/goals/GoalCard';
 import { CertificateCard } from '@/components/features/certificates/CertificateCard';
-import { SkillsRadar } from '@/components/features/about/SkillsRadar';
 import { UsefulLinks } from '@/components/links/UsefulLinks';
 import { SocialLinks } from '@/components/links/SocialLinks';
 import { RightColumn } from '@/components/layout/RightColumn';
@@ -21,31 +18,40 @@ import { Modal } from '@/components/common/Modal';
 import { ProjectsContent } from '@/components/common/ProjectsModal';
 import { PublicationsContent } from '@/components/common/PublicationsModal';
 import { useApiGoals, useApiCertificates } from '@/components/data/ActiveInfoProvider';
-import { BackToTopButton } from '@/components/common/BackToTopButton';
+import type { Goal, Certificate } from '@/components/data/ActiveInfoProvider';
+import { LoadingSpinner } from '@/components/common/LoadingSpinner';
 
+// Lazy loading para componentes não críticos
+// Mapear exports nomeados para default para uso com React.lazy
+const WorkExperienceSection = lazy(() =>
+  import('@/components/features/about/WorkExperienceSection').then((m) => ({ default: m.WorkExperienceSection }))
+);
+const SkillsRadar = lazy(() =>
+  import('@/components/features/about/SkillsRadar').then((m) => ({ default: m.SkillsRadar }))
+);
 const AllCertificates = lazy(() => import('@/screens/AllCertificates'));
 const NotFound = lazy(() => import('@/screens/NotFound'));
 const AllGoals = lazy(() => import('@/screens/AllGoals'));
 const AllNotionNotes = lazy(() => import('@/components/data/AllNotionNotes'));
-const AdminPanel = lazy(() => import('@/screens/AdminPanel'));
 
 function App() {
   const [modalState, setModalState] = useState({ type: null, isOpen: false });
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const location = useLocation();
 
   const { goals: previewGoals, loading: loadingGoals } = useApiGoals();
   const { certificates, loading: loadingCertificates } = useApiCertificates();
 
-  const totalGoals = useMemo(() => previewGoals.length, [previewGoals]);
-  const completedGoals = useMemo(
-    () => previewGoals.filter((goal: { progress: number }) => goal.progress === 100).length,
-    [previewGoals]
+  // Adapters para alinhar tipos de itens com os Cards
+  const GoalCardAdapter: React.FC<Goal> = ({ title, progress }) => (
+    <GoalCard
+      title={title}
+      // Valores default quando não disponíveis no preview
+      deadline={new Date().toISOString()}
+      progress={typeof progress === 'number' ? progress : 0}
+      category={GoalCategory.Skills}
+    />
   );
-  const completionRate = useMemo(
-    () => totalGoals > 0 ? Math.round((completedGoals / totalGoals) * 100) : 0,
-    [totalGoals, completedGoals]
-  );
+
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
@@ -68,11 +74,10 @@ function App() {
 
   return (
     <AppBackground isDarkMode={isDarkMode}>
-      <BackgroundLines className="fixed inset-0 w-full h-full z-0 pointer-events-none" />
       <div className="relative min-h-screen flex flex-col z-10">
         <Header />
         <main className="flex-1">
-          <Suspense fallback={<div className="flex items-center justify-center h-40 text-lg text-gray-500">Carregando...</div>}>
+          <Suspense fallback={<LoadingSpinner message="Carregando página..." />}>
             <Routes>
               <Route
                 path="/"
@@ -80,19 +85,17 @@ function App() {
                   <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                     <ProfileSection />
                     <AboutMeCard />
-                    <WorkExperienceSection />
-                    <StatsOverview 
-                      totalGoals={totalGoals}
-                      completedGoals={completedGoals}
-                      completionRate={completionRate}
-                    />
+                    <Suspense fallback={<LoadingSpinner message="Carregando experiência..." />}>
+                      <WorkExperienceSection />
+                    </Suspense>
+                    <StatsOverview />
                     <MainGrid
                       left={
                         <>
                           <SectionList
                             title="Objetivos do momento"
                             items={loadingGoals ? [] : previewGoals}
-                            Card={GoalCard}
+                            Card={GoalCardAdapter}
                             seeAllTo="/goals"
                             seeAllState={{}}
                           />
@@ -100,6 +103,13 @@ function App() {
                             title="Minhas Certificações"
                             items={loadingCertificates ? [] : certificates}
                             Card={CertificateCard}
+                            mapItem={(c: Certificate & { date?: string; issuer?: string; progress?: number; externalUrl?: string }) => ({
+                              title: c.title,
+                              date: c.date || new Date().toLocaleDateString('pt-BR'),
+                              issuer: c.issuer || '—',
+                              progress: c.progress ?? 0,
+                              externalUrl: c.externalUrl,
+                            })}
                             seeAllTo="/certificates"
                             seeAllState={{ certificates }}
                           />
@@ -108,7 +118,9 @@ function App() {
                       }
                       right={
                         <RightColumn>
-                          <SkillsRadar />
+                          <Suspense fallback={<LoadingSpinner message="Carregando habilidades..." />}>
+                            <SkillsRadar />
+                          </Suspense>
                           <UsefulLinks />
                           <SocialLinks />
                         </RightColumn>
@@ -120,13 +132,11 @@ function App() {
               <Route path="/goals" element={<AllGoals />} />
               <Route path="/certificates" element={<AllCertificates />} />
               <Route path="/notes" element={<AllNotionNotes />} />
-              <Route path="/admin" element={<AdminPanel />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
         </main>
-        {/* Renderiza o Footer apenas se não estiver na rota /admin */}
-        {location.pathname !== '/admin' && <Footer />}
+        <Footer />
       </div>
       <Modal
         isOpen={modalState.isOpen && modalState.type === 'projects'}

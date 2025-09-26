@@ -1,17 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ScrollReveal from 'scrollreveal';
 import { Calendar, Clock, ArrowRight, ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+interface NotionNote {
+  id: string;
+  url: string;
+  createdTime: string;
+  lastEditedTime?: string;
+  title?: string;
+  texto?: string;
+  tags?: string[];
+}
+
 export function NotionNotes() {
-  const [notes, setNotes] = useState<any[]>([]);
+  const PREVIEW_COUNT = 4;
+  const [notes, setNotes] = useState<NotionNote[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     ScrollReveal().reveal('.notion-notes-container', {
       distance: '50px',
-      duration: 600, // ajustado para 600ms
+      duration: 600,
       easing: 'ease-out',
       origin: 'bottom',
       delay: 200,
@@ -23,14 +34,12 @@ export function NotionNotes() {
     const fetchNotes = async () => {
       try {
         const response = await fetch('https://portifolio-api-mu.vercel.app/api/notion/notes');
-        if (!response.ok) {
-          throw new Error(`Erro HTTP! Status: ${response.status}`);
-        }
-        const data = await response.json();
-        const sorted = data.sort((a: any, b: any) => new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime());
+        if (!response.ok) throw new Error(`Erro HTTP! Status: ${response.status}`);
+        const data: NotionNote[] = await response.json();
+        const sorted = data.sort((a, b) => new Date(b.createdTime).getTime() - new Date(a.createdTime).getTime());
         setNotes(sorted);
-      } catch (error: any) {
-        setError(error.message);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Erro desconhecido');
       } finally {
         setLoading(false);
       }
@@ -50,13 +59,13 @@ export function NotionNotes() {
       minute: '2-digit',
     });
 
-  const previewNotes = notes.slice(0, 3);
+  const previewNotes = notes.slice(0, PREVIEW_COUNT);
 
   return (
     <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800 dark:text-gray-100 notion-notes-container">
       <div className="flex justify-between items-center mb-6">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Anotações do Notion</h3>
-        {notes.length > 3 && (
+        {notes.length >= PREVIEW_COUNT && (
           <Link
             to="/notes"
             state={{ notes }}
@@ -75,9 +84,9 @@ export function NotionNotes() {
         <div className="text-center py-4 text-gray-500">Nenhuma anotação encontrada</div>
       ) : (
         <div className="space-y-4">
-          {previewNotes.map((note) => (
+          {previewNotes.map((note, index) => (
             <a
-              key={note.id}
+              key={`${note.id ?? 'note'}-${index}`}
               href={note.url}
               target="_blank"
               rel="noopener noreferrer"
@@ -109,11 +118,11 @@ export function NotionNotes() {
                 </p>
               )}
 
-              {note.tags?.length > 0 && (
+              {(note.tags?.length ?? 0) > 0 && (
                 <div className="flex flex-wrap gap-2 mt-2">
-                  {note.tags.map((tag: string, index: number) => (
+                  {(note.tags ?? []).map((tag: string, i: number) => (
                     <span
-                      key={index}
+                      key={i}
                       className="px-2 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400"
                     >
                       {tag}

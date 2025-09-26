@@ -1,0 +1,19 @@
+{
+  "name": "Eduardo Sichelero - Portfólio",
+  "short_name": "Eduardo Sichelero",
+  "description": "Portfólio de Eduardo Sichelero estudante de Ciência da Computação",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["portfolio", "technology", "developer"],
+  "lang": "pt-BR"
+}

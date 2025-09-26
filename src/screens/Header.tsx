@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import {
   Layout,
   Menu,
   X,
   FileDown,
-  MessageCircle,
   Send,
   Award,
   Target,
   BookOpen,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { usefulLinks } from '@/components/links/usefulLinks.data';
 import { DarkModeToggle } from "@/components/ui/DarkModeToggle";
 
-export function Header({ goals }) {
+type GoalsState = Array<{ id: string; title: string; progress?: number }>; // tipo leve
+export function Header({ goals }: { goals?: GoalsState }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [notes, setNotes] = useState(null);
@@ -133,19 +134,6 @@ export function Header({ goals }) {
             </li>
             <li>
               <a
-                href="https://wa.me/54999595865"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center px-3 py-2 rounded-md hover:bg-green-50 dark:hover:bg-green-900 transition"
-                title="WhatsApp"
-                onClick={handleNav}
-              >
-                <MessageCircle className="w-5 h-5 mr-2" />
-                WhatsApp
-              </a>
-            </li>
-            <li>
-              <a
                 href="https://t.me/EduardoSichelero"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -196,6 +184,45 @@ export function Header({ goals }) {
                   Anotações
                 </button>
               )}
+            </li>
+            {/* Bloco: Recursos Úteis (top 5) */}
+            <li className="pt-2 border-t border-gray-200 dark:border-gray-700 mt-2">
+              <div className="px-3 pb-2 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Recursos úteis</div>
+              <ul className="flex flex-col gap-1">
+                {usefulLinks.slice(0, 5).map((item, idx) => (
+                  <li key={`useful-${idx}`}>
+                    <a
+                      href={item.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition"
+                      onClick={handleNav}
+                    >
+                      <span className="mr-2 inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-gray-300">
+                        {item.icon}
+                      </span>
+                      <span className="text-sm text-gray-700 dark:text-gray-300 line-clamp-1">{item.title}</span>
+                      {item.isCurrent && (
+                        <span className="ml-2 inline-flex items-center px-2 py-0.5 text-[10px] font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100 border border-green-300 dark:border-green-600">Atual</span>
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+            {/* Ação extra: Alternar tema dentro do menu */}
+            <li className="pt-2 border-t border-gray-200 dark:border-gray-700 mt-2">
+              <button
+                onClick={() => {
+                  const isDark = document.documentElement.classList.contains('dark');
+                  const next = isDark ? 'light' : 'dark';
+                  document.documentElement.classList.toggle('dark');
+                  try { localStorage.setItem('theme', next); } catch {/* ignore */}
+                }}
+                className="w-full text-left px-3 py-2 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 transition text-sm text-gray-700 dark:text-gray-300"
+              >
+                Alternar tema rapidamente
+              </button>
             </li>
           </ul>
         </nav>

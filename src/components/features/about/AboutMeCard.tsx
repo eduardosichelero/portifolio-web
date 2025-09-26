@@ -1,8 +1,9 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import ScrollReveal from 'scrollreveal';
 import profileImage from '@/assets/profile.png';
 import { AiOutlineLinkedin } from 'react-icons/ai'; 
-import { SiNotion } from 'react-icons/si'; 
+import { SiNotion } from 'react-icons/si';
+import OptimizedImage from '../../common/OptimizedImage'; 
 
 export function AboutMeCard() {
   useEffect(() => {
@@ -20,10 +21,13 @@ export function AboutMeCard() {
     <div className="about-me-card bg-white rounded-xl shadow-md p-6 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 mb-11 dark:bg-gray-800 dark:text-gray-100">
       {/* Foto */}
       <div className="w-32 h-32 rounded-full overflow-hidden bg-gray-100 flex-shrink-0 dark:bg-gray-600">
-        <img
+        <OptimizedImage
           src={profileImage}
-          alt="Sua Foto"
+          alt="Eduardo Sichelero - Foto de perfil"
           className="object-cover w-full h-full"
+          width={128}
+          height={128}
+          loading="eager"
         />
       </div>
 
@@ -31,14 +35,17 @@ export function AboutMeCard() {
       <div className="flex-1">
         <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Eduardo Sichelero</h2>
         <p className="text-gray-600 mt-2 dark:text-gray-300">
-          Sou o Eduardo, estudante de Ciência da Computação na <strong>ATITUS</strong>, em Passo Fundo, com grande interesse em <strong>segurança cibernética</strong>, <strong>redes</strong>, <strong>Linux</strong> e <strong>Pentest</strong>. No meu tempo livre, busco expandir meus conhecimentos em tecnologia, aprofundando-me em programação, segurança de redes e outros tópicos relacionados à área.
+          Sou o Eduardo, estudante de Ciência da Computação na <strong>ATITUS</strong>, em Passo Fundo.
+          No momento, estou focado em <strong>redes de computadores</strong>, <strong>máquinas virtuais</strong> e <strong>Linux</strong>.
         </p>
         <p className="text-gray-600 mt-2 dark:text-gray-300">
-          Atualmente, estou no <strong>5º semestre</strong> da graduação e desenvolvo projetos em áreas como <strong>segurança de redes</strong>, aprendizado de máquina e desenvolvimento frontend. 
-          Também compartilho minhas anotações acadêmicas, dicas de aprendizado e conteúdos interessantes no meu <strong>Notion</strong>. Fique à vontade para conferir o que estou estudando e como estou evoluindo!
+          No dia a dia, realizo <strong>configuração</strong> e <strong>monitoramento</strong> de servidores Linux, utilizando
+          tecnologias como <strong>Proxmox</strong>, <strong>VirtualBox</strong>, <strong>Mikrotik RouterOS</strong>, e para observabilidade
+          <strong> Zabbix</strong> e <strong>Grafana</strong>. Para firewall, uso <strong>pfSense</strong> e estou começando com <strong>Sophos</strong>.
         </p>
         <p className="text-gray-600 mt-2 dark:text-gray-300">
-          Se você tem interesse em <strong>cybersecurity</strong>, <strong>redes</strong> ou <strong>desenvolvimento de software</strong>, vamos trocar ideias e aprender juntos!
+          Estou focado nessa área e pretendo seguir para <strong>Segurança</strong> em breve. Também compartilho minhas anotações e conteúdos
+          no meu <strong>Notion</strong>. Fique à vontade para conferir!
         </p>
 
         {/* Links */}
@@ -66,16 +73,22 @@ export function AboutMeCard() {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Interesses:</h3>
           <div className="flex flex-wrap gap-2">
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-100">
-              Programação
+              Redes
             </span>
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100">
-              Leitura
+              Linux
             </span>
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100">
-              Vídeos
+              Virtualização
+            </span>
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800 dark:bg-purple-700 dark:text-purple-100">
+              Servidores
+            </span>
+            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-indigo-100 text-indigo-800 dark:bg-indigo-700 dark:text-indigo-100">
+              Monitoramento
             </span>
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-100">
-              Games
+              Firewall
             </span>
           </div>
         </div>

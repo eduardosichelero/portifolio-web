@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ScrollReveal from 'scrollreveal';
-import { BookOpen, Shield, Code, GraduationCap } from 'lucide-react';
+import { BookOpen, Shield, Code, GraduationCap, Server, PcCase} from 'lucide-react';
 import { Modal } from '@/components/common/Modal';
 import { ProjectsContent } from '@/components/common/ProjectsModal';
 import { PublicationsContent } from '@/components/common/PublicationsModal';
@@ -31,14 +31,14 @@ export function ProfileSection() {
   };
 
   return (
-    <div className="profile-section bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8 mt-16">
+  <div className="profile-section bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 mb-8 mt-16">
       <div className="flex items-center space-x-4 mb-6">
         <div className="w-16 h-16 rounded-full bg-indigo-100 dark:bg-indigo-700 flex items-center justify-center">
           <GraduationCap className="w-8 h-8 text-indigo-600 dark:text-indigo-300" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white">Estudante de Ciência da Computação</h2>
-          <p className="text-gray-600 dark:text-gray-300">Começando em Cibersegurança</p>
+          <p className="text-gray-600 dark:text-gray-300">Focado em Redes, Linux e Virtualização (rumo à Segurança)</p>
         </div>
       </div>
 
@@ -48,18 +48,21 @@ export function ProfileSection() {
           <span>5º semestre de graduação</span>
         </div>
         <div className="flex items-center space-x-3 text-gray-700 dark:text-gray-300">
-          <Shield className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-          <span>Foco em cyber segurança</span>
+          <PcCase className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          <span>Redes, Linux e Virtualização</span>
         </div>
         <div className="flex items-center space-x-3 text-gray-700 dark:text-gray-300">
-          <Code className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
-          <span>Desenvovilmento frontend</span>
+          <Server className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+          <span>Configuração e monitoramento de servidores</span>
         </div>
       </div>
 
       <p className="text-gray-600 dark:text-gray-300 mb-4">
-        Apaixonado por cibersegurança e desenvolvimento de software. Atualmente focado em segurança de redes, 
-        testes de penetração e desenvolvimento seguro de aplicações.
+        Atualmente estou estudando redes de computadores, máquinas virtuais e Linux. No dia a dia faço
+        configuração e monitoramento de servidores Linux, utilizando <strong>Proxmox</strong>, <strong>VirtualBox</strong>,
+        <strong> Mikrotik RouterOS</strong>, e para observabilidade <strong>Zabbix</strong> e <strong>Grafana</strong>.
+        No firewall, uso <strong>pfSense</strong> e estou começando com <strong>Sophos</strong>.
+        Estou focado nessa área e pretendo seguir com segurança (cibersegurança) em breve.
       </p>
 
       <div className="flex space-x-3">

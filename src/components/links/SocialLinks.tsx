@@ -15,11 +15,6 @@ const links: Link[] = [
     icon: <MessageCircle className="w-5 h-5" />,
   },
   {
-    title: "WhatsApp",
-    url: "https://wa.me/54999595865",
-    icon: <LucideMessageCircleMore className="w-5 h-5" />,
-  },
-  {
     title: "GitHub",
     url: "https://github.com/eduardosichelero",
     icon: <Github className="w-5 h-5" />,

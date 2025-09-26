@@ -1,15 +1,16 @@
 import React from 'react';
 import { SeeAllButton } from '@/components/buttons/SeeAllButton';
 
-interface SectionListProps<T> {
+interface SectionListProps<T, P = T, S = unknown> {
   title: string;
   items: T[];
-  Card: React.ComponentType<T & { key?: React.Key }>;
+  Card: React.ComponentType<P & { key?: React.Key }>;
+  mapItem?: (item: T) => P;
   seeAllTo?: string;
-  seeAllState?: any;
+  seeAllState?: S;
 }
 
-export function SectionList<T>({ title, items, Card, seeAllTo, seeAllState }: SectionListProps<T>) {
+export function SectionList<T, P = T, S = unknown>({ title, items, Card, mapItem, seeAllTo, seeAllState }: SectionListProps<T, P, S>) {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -22,7 +23,7 @@ export function SectionList<T>({ title, items, Card, seeAllTo, seeAllState }: Se
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {items.map((item, idx) => (
-          <Card key={idx} {...item} />
+          <Card key={idx} {...(mapItem ? mapItem(item) : (item as unknown as P))} />
         ))}
       </div>
     </div>
